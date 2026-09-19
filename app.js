@@ -1,4 +1,4 @@
-import { content } from './content.js';
+import { content, releaseDownload } from './content.js';
 import { icons } from './assets/vendor/icons.js';
 import { DURATION, stateAt, formatExample } from './demo-state.js';
 
@@ -24,6 +24,27 @@ document.querySelectorAll('[data-content]').forEach(el => el.textContent = conte
 text('simulation-label', ui.simulated); text('demo-app-name', ui.app); text('time-note', ui.compressed);
 text('example-label', content.examples.label);
 text('beta-title', content.beta.title); text('beta-status', content.beta.status); text('beta-body', content.beta.body);
+const download = content.beta.download;
+const downloadState = releaseDownload(download);
+document.querySelectorAll('[data-download-cta]').forEach(button => {
+  button.querySelector('[data-download-label]').textContent = downloadState.label;
+  button.disabled = !downloadState.ready;
+  button.dataset.ready = String(downloadState.ready);
+  button.title = downloadState.ready ? download.readyLabel : download.preparingLabel;
+  button.addEventListener('click', () => {
+    const state = releaseDownload();
+    if (state.ready && state.href) window.location.assign(state.href);
+  });
+});
+text('download-note', download.note); text('download-meta', download.requirements);
+text('install-warning', download.warning); text('damaged-warning', download.damagedWarning);
+$('apple-support').href = download.supportUrl;
+download.steps.forEach(([title, body]) => {
+  const item = document.createElement('li');
+  const heading = document.createElement('h3'); heading.textContent = title;
+  const paragraph = document.createElement('p'); paragraph.textContent = body;
+  item.append(heading, paragraph); $('install-steps').append(item);
+});
 content.beta.details.forEach(([title, body], index) => {
   const detail = document.createElement('details');
   const summary = document.createElement('summary'); summary.textContent = title;

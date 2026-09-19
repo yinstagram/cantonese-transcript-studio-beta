@@ -19,9 +19,9 @@ Run `npm test` for timeline, enrollment, speaker-switch and export-format checks
 
 ## Release boundary
 
-Build 44 is not promoted as a portable download. The 2026-09-19 read-only distribution check returned 12 PASS / 4 FAIL: development bundle identifier, missing embedded Python, missing bundled FFmpeg/ffprobe, external runtime paths. The existing archive is retained unchanged in Git for historical continuity, but excluded from the Pages build through `_config.yml`. Website completion does not mean app distribution acceptance.
+Build 44 remains historical and is not promoted as a portable download. The 2026-09-19 read-only distribution check returned 12 PASS / 4 FAIL: development bundle identifier, missing embedded Python, missing bundled FFmpeg/ffprobe, external runtime paths. The existing archive is retained unchanged in Git for historical continuity, but excluded from the Pages build through `_config.yml`.
 
-Before restoring download promotion: package a portable artifact, verify its exact digest and extraction layout, complete clean-Mac browser/quarantine installation and a real transcription/export, establish tested requirements and signing status. Do not describe a scripted demo as live recognition or imply gimbal control.
+The current public prerelease is the v0.8.21 friend Beta (Build 45). Its published ZIP matched the locally tested artifact at 211,496,854 bytes with SHA-256 `83dbf2314b158cc96086866024fccad7d8fed2d5c94516ca7eb517fec38bdf02`, and passed scoped local isolated-HOME smoke: native launch, 190 Swift tests, real 3-second media transcription, six exports, and burned MP4. This is not full production acceptance: a second clean Mac, fresh model download, and notarization have not been verified. Do not describe a scripted demo as live recognition or imply gimbal control.
 
 ## Deployment
 

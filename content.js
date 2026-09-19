@@ -35,13 +35,36 @@ export const content = {
     times: [['00:00:01,000', '00:00:04,000'], ['00:00:04,500', '00:00:07,000']]
   },
   beta: {
-    title: 'Beta，仲喺打磨。', status: '公開下載準備中',
-    body: '現有版本已喺開發用 Mac 測試，但朋友直接下載安裝嘅流程未完成驗證。下載入口會喺獨立安裝測試通過後開放。',
+    title: 'Beta，仲喺打磨。', status: '朋友測試版可下載',
+    body: '已完成本機隔離環境基本測試；未喺另一部乾淨 Mac 驗證，請保留原始檔。',
+    download: {
+      ready: true,
+      url: 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.21-friend-beta.1/CantoneseTranscriptStudio-0.8.21-friend-beta-arm64.zip',
+      preparingLabel: '下載準備中',
+      readyLabel: '下載朋友測試版 ZIP',
+      note: 'v0.8.21 · Build 45 · ZIP 211MB',
+      requirements: 'Apple Silicon Mac · macOS 26.2 或以上 · 建議 16GB RAM、預留 20GB 可用空間。首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
+      steps: [
+        ['下載同安裝', '下載 ZIP，解壓，再將 Cantonese Transcript Studio Beta 拖入 Applications。'],
+        ['雙擊開啟一次', '雙擊 Cantonese Transcript Studio Beta；如果見到被封鎖，繼續下一步。'],
+        ['強制開啟／仍要打開（Open Anyway）', '打開系統設定 → 私隱與保安 → 強制開啟／仍要打開（Open Anyway）；如要求登入就登入，再確認開啟。']
+      ],
+      warning: '朋友測試版，未經 Apple 公證。',
+      damagedWarning: '如果系統提示「已損壞」或「惡意軟件」，唔好繼續開啟，直接聯絡 Yin。',
+      supportUrl: 'https://support.apple.com/zh-hk/102445'
+    },
     details: [
-      ['平台', '現階段以 Apple Silicon Mac 為主。正式最低系統要求會跟下載版一齊公布。'],
-      ['本機處理', '設定完成後，轉錄喺 Mac 本機進行。首次下載模型同主動匯入網上影片需要連線。'],
-      ['Lazy Camman', '現有功能係講者辨認同轉人提示；未提供相機、gimbal 自動追蹤或手機背景控制。'],
-      ['AI 即時提示', '實驗功能。可根據現場字幕同背景資料提供短提示；唔保證延遲或答案準確度。']
+      ['測試狀態', '朋友 Beta 供安裝同基本使用測試；唔代表所有功能已完成測試。'],
+      ['Lazy Camman', '實驗功能，講者提示未做準確度認證；未提供相機、gimbal 自動追蹤或手機背景控制。'],
+      ['AI 即時提示', '實驗功能，需要另行設定本機 runtime；唔保證延遲或答案準確度。']
     ]
   }
 };
+
+export function releaseDownload(download = content.beta.download) {
+  return {
+    ready: download.ready === true,
+    href: download.ready === true ? download.url : null,
+    label: download.ready === true ? download.readyLabel : download.preparingLabel
+  };
+}
