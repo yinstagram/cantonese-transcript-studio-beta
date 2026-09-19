@@ -1,4 +1,5 @@
 import { content, releaseDownload } from './content.js';
+import { catalog, featuresByCategory } from './features.js';
 import { icons } from './assets/vendor/icons.js';
 import { DURATION, stateAt, formatExample } from './demo-state.js';
 
@@ -21,6 +22,82 @@ function icon(name, className = '') {
 }
 document.querySelectorAll('[data-icon]').forEach(el => el.replaceWith(icon(el.dataset.icon, el.className)));
 document.querySelectorAll('[data-content]').forEach(el => el.textContent = content[el.dataset.content]);
+const evidenceLabels = { implemented: '本機功能', historical: '有歷史實測紀錄' };
+text('catalog-intro', catalog.intro);
+text('catalog-boundary-text', catalog.boundary);
+text('not-provided-title', catalog.notProvided.title);
+text('not-provided-intro', catalog.notProvided.intro);
+catalog.categories.forEach((category, index) => {
+  const items = featuresByCategory(category.id);
+  const details = document.createElement('details');
+  details.className = 'catalog-category';
+  details.open = index === 0;
+  const summary = document.createElement('summary');
+  const indexLabel = document.createElement('span');
+  indexLabel.className = 'catalog-index';
+  indexLabel.textContent = String(index + 1).padStart(2, '0');
+  const categoryIcon = document.createElement('span');
+  categoryIcon.className = 'catalog-icon';
+  categoryIcon.append(icon(category.icon));
+  const heading = document.createElement('span');
+  heading.className = 'catalog-heading';
+  const title = document.createElement('strong');
+  title.textContent = category.title;
+  const summaryText = document.createElement('p');
+  summaryText.textContent = category.summary;
+  heading.append(title, summaryText);
+  const count = document.createElement('span');
+  count.className = 'catalog-count';
+  count.textContent = `${items.length} 項`;
+  const chevron = document.createElement('span');
+  chevron.className = 'catalog-chevron';
+  chevron.append(icon('ChevronRight'));
+  summary.append(indexLabel, categoryIcon, heading, count, chevron);
+  const body = document.createElement('div');
+  body.className = 'catalog-body';
+  items.forEach(feature => {
+    const card = document.createElement('article');
+    card.className = 'catalog-card';
+    const cardHeader = document.createElement('div');
+    cardHeader.className = 'catalog-card-header';
+    const cardTitle = document.createElement('h4');
+    cardTitle.textContent = feature.title;
+    const badge = document.createElement('span');
+    badge.className = 'catalog-badge';
+    badge.dataset.evidence = feature.evidence;
+    badge.textContent = evidenceLabels[feature.evidence];
+    cardHeader.append(cardTitle, badge);
+    const fields = document.createElement('dl');
+    for (const key of ['situation', 'input', 'output', 'conditions']) {
+      const field = document.createElement('div');
+      field.className = 'catalog-field';
+      const label = document.createElement('dt');
+      label.textContent = catalog.labels[key];
+      const value = document.createElement('dd');
+      value.textContent = feature[key];
+      field.append(label, value);
+      fields.append(field);
+    }
+    card.append(cardHeader, fields);
+    body.append(card);
+  });
+  details.append(summary, body);
+  $('catalog-list').append(details);
+});
+catalog.notProvided.items.forEach(item => {
+  const listItem = document.createElement('li');
+  const itemHeader = document.createElement('div');
+  const title = document.createElement('strong');
+  title.textContent = item.title;
+  const status = document.createElement('span');
+  status.className = 'status-chip';
+  status.textContent = catalog.notProvided.status;
+  itemHeader.append(title, status);
+  const note = document.createElement('p');
+  note.textContent = item.note;
+  listItem.append(itemHeader, note);
+  $('not-provided-items').append(listItem);
+});
 text('simulation-label', ui.simulated); text('demo-app-name', ui.app); text('time-note', ui.compressed);
 text('example-label', content.examples.label);
 text('beta-title', content.beta.title); text('beta-status', content.beta.status); text('beta-body', content.beta.body);
