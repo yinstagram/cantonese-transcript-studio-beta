@@ -1,0 +1,5 @@
+exclude:
+  - CantoneseTranscriptStudio-v0.8.20-build44.zip
+  - README.md
+  - package.json
+  - tests
