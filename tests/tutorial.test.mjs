@@ -15,7 +15,7 @@ test('website renders the approved 15-second film with accessible custom control
   assert.match(html, /poster="assets\/lazycamman-tutorial-short-poster\.jpg"/);
   assert.match(html, /preload="metadata"/);
   assert.match(html, /playsinline/);
-  assert.match(html, /aria-label="Lazy Camman 15 秒 B 風格教學動畫/);
+  assert.match(html, /aria-label="Lazy Camman 15 秒教學動畫/);
   assert.ok(!html.includes('id="guests-image"'));
   assert.ok(!html.includes('autoplay'));
   assert.ok(film.isFile() && film.size > 1_000_000);
@@ -26,8 +26,8 @@ test('website renders the approved 15-second film with accessible custom control
   assert.match(app, /video\.currentTime = Math\.max\(0, Math\.min\(DURATION, Number\(value\) \|\| 0\)\)/);
   assert.match(app, /video\.currentTime = DURATION/);
   assert.match(app, /'loadedmetadata', 'timeupdate', 'seeked', 'play', 'pause', 'ended'/);
-  assert.ok(!app.includes('requestAnimationFrame'));
-  assert.ok(!app.includes('performance.now'));
+  assert.ok(app.includes('const initialHash = window.location.hash'));
+  assert.ok(app.includes('window.addEventListener(\'load\', settleInitialHash'));
 });
 
 test('published scenes match the one 15-second public-cut authority', async () => {

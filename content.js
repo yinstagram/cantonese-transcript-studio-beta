@@ -46,10 +46,32 @@ export const content = {
       requirementsQuick: ['Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'],
       requirementsDetail: '首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
       steps: [
-        ['下載 ZIP', '下載朋友測試版 ZIP，保留原始檔。'],
-        ['解壓並放入 Applications', '解壓後，將 CTS Beta 拖入 Applications。'],
-        ['雙擊開一次', '如果 macOS 封鎖，先去下一步。'],
-        ['Open Anyway', '系統設定 → 私隱與保安 → 強制開啟／仍要打開。']
+        {
+          title: '下載 ZIP',
+          action: '下載朋友測試版 ZIP',
+          target: 'Downloads',
+          result: '原始 ZIP 已保留喺 Downloads'
+        },
+        {
+          title: '解壓並放入 Applications',
+          action: '先解壓，再將 CTS Beta 拖入 Applications',
+          target: 'Downloads → Applications',
+          targetFrom: 'Downloads',
+          targetTo: 'Applications',
+          result: 'Applications 入面見到 CTS Beta'
+        },
+        {
+          title: '雙擊開一次',
+          action: '雙擊 CTS Beta',
+          target: 'CTS Beta',
+          result: 'macOS 顯示被封鎖提示'
+        },
+        {
+          title: '允許開啟',
+          action: '系統設定 → 私隱與保安 → Open Anyway',
+          target: 'Privacy & Security',
+          result: '返回 CTS Beta 再開一次'
+        }
       ],
       warning: '朋友測試版，未經 Apple 公證。',
       damagedWarning: '如果系統提示「已損壞」或「惡意軟件」，唔好繼續開啟，直接聯絡 Yin。',

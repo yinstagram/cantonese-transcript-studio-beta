@@ -19,7 +19,13 @@ export const catalog = {
         steps: ['貼公開 URL', '揀下載內容', '入隊同睇狀態'],
         output: '可處理媒體 · 音訊 · 字幕',
         platforms: ['YouTube', 'Instagram', 'Threads', 'X', 'TikTok', 'Facebook', 'Reddit', 'Bilibili'],
-        modes: ['影片', '音訊', '字幕', '全部']
+        modes: ['影片', '音訊', '字幕'],
+        modeOutputs: {
+          '影片': 'MP4 · 可處理影片',
+          '音訊': 'M4A · 分離音訊',
+          '字幕': 'SRT / VTT · 字幕檔'
+        },
+        replay: '重播匯入示意'
       }
     },
     {

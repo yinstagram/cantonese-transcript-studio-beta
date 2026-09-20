@@ -10,6 +10,7 @@ const ui = content.ui;
 const video = $('tutorial-video');
 let scenario = null, scenarioTimer;
 let format = 'srt', lastAnnouncement = '';
+const initialHash = window.location.hash;
 
 function icon(name, className = '') {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -24,15 +25,17 @@ function icon(name, className = '') {
 
 function demoVisual(id) {
   if (id === 'import') {
+    const demo = catalog.categories[0].demo;
     return `
+      <p class="demo-note">網址匯入示意</p>
       <div class="url-shell">
         <span class="url-text">https://www.youtube.com/watch?v=…</span>
-        <div class="platform-row">${catalog.categories[0].demo.platforms.map(platform => `<span class="platform-chip">${platform}</span>`).join('')}</div>
-        <div class="download-options">${catalog.categories[0].demo.modes.map(mode => `<span>${mode}</span>`).join('')}</div>
+        <div class="platform-row">${demo.platforms.map(platform => `<span class="platform-chip">${platform}</span>`).join('')}</div>
+        <div class="download-options" role="group" aria-label="匯入模式示意">${demo.modes.map((mode, index) => `<button type="button" data-import-mode="${mode}" aria-pressed="${index === 0}">${mode}</button>`).join('')}</div>
       </div>
       <div class="flow-path"><span class="flow-packet"></span></div>
-      <div class="import-result"><span>MP4</span><span>M4A</span><span>SRT/VTT</span><span>逐字稿</span></div>
-      <div class="mini-progress"><span></span></div>`;
+      <div class="import-result"><b>示意輸出</b><span id="import-output">${demo.modeOutputs[demo.modes[0]]}</span></div>
+      <button type="button" class="import-replay" id="import-replay"><i data-icon="RotateCcw"></i><span>${demo.replay}</span></button>`;
   }
   if (id === 'review') {
     return `<div class="scan-document"><span class="scan-row">00:01 今天我哋想講…</span><span class="scan-row low">00:04 呢個名詞唔太確定</span><span class="scan-row">00:09 先整理問題</span><span class="scan-lens"></span></div>`;
@@ -122,7 +125,7 @@ function renderFeatureDemos() {
     card.className = 'feature-demo-card';
     card.dataset.categoryId = category.id;
     card.innerHTML = `
-      <div class="demo-stage" data-demo="${category.id}" aria-hidden="true">${demoVisual(category.id)}</div>
+      <div class="demo-stage" data-demo="${category.id}" data-running="true" aria-hidden="${category.id !== 'import'}">${demoVisual(category.id)}</div>
       <div class="feature-demo-copy">
         <p class="eyebrow"><span class="small-dot"></span> ${category.title}</p>
         <h3>${demo.hook}</h3>
@@ -130,10 +133,24 @@ function renderFeatureDemos() {
         <p class="demo-output">${demo.output}</p>
       </div>
       <button type="button" class="text-link demo-more" data-open-category="${category.id}">睇細節 <i data-icon="ArrowRight"></i></button>`;
-    const buttonIcon = card.querySelector('[data-icon]');
-    buttonIcon.replaceWith(icon(buttonIcon.dataset.icon, buttonIcon.className));
+    card.querySelectorAll('[data-icon]').forEach(el => el.replaceWith(icon(el.dataset.icon, el.className)));
     grid.append(card);
   });
+
+  const importCard = grid.querySelector('[data-category-id="import"]');
+  const importDemo = catalog.categories[0].demo;
+  function restartImportAnimation() {
+    const stage = importCard.querySelector('.demo-stage');
+    stage.dataset.running = 'false';
+    void stage.offsetWidth;
+    stage.dataset.running = 'true';
+  }
+  importCard.querySelectorAll('[data-import-mode]').forEach(button => button.addEventListener('click', () => {
+    importCard.querySelectorAll('[data-import-mode]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    importCard.querySelector('#import-output').textContent = importDemo.modeOutputs[button.dataset.importMode];
+    restartImportAnimation();
+  }));
+  importCard.querySelector('#import-replay').addEventListener('click', restartImportAnimation);
 
   document.querySelectorAll('[data-open-category]').forEach(button => button.addEventListener('click', () => {
     const details = document.querySelector(`.catalog-category[data-category-id="${button.dataset.openCategory}"]`);
@@ -180,47 +197,148 @@ download.requirementsQuick.forEach(requirement => {
 });
 text('install-warning', download.warning); text('damaged-warning', download.damagedWarning);
 $('apple-support').href = download.supportUrl;
-download.steps.forEach(([title, body]) => {
+download.steps.forEach(step => {
   const item = document.createElement('li');
   const button = document.createElement('button');
   button.type = 'button';
-  const heading = document.createElement('h3'); heading.textContent = title;
-  const paragraph = document.createElement('p'); paragraph.textContent = body;
-  button.append(heading, paragraph); item.append(button); $('install-steps').append(item);
+  const heading = document.createElement('h3'); heading.textContent = step.title;
+  button.append(heading); item.append(button); $('install-steps').append(item);
 });
 const installSteps = [...document.querySelectorAll('#install-steps button')];
 const installWalkthrough = $('download-walkthrough');
-let installStep = 0;
-let installTimer;
+const INSTALL_TOTAL = 12000;
+const INSTALL_SCENE = INSTALL_TOTAL / download.steps.length;
+let installTime = 0;
+let installPlaying = false;
 let installInView = false;
-function renderInstallStep(index) {
-  installStep = (index + installSteps.length) % installSteps.length;
-  installWalkthrough.dataset.step = String(installStep);
-  installSteps.forEach((button, i) => button.setAttribute('aria-pressed', String(i === installStep)));
+let installFrame = 0;
+let installLastTick = 0;
+
+function installSceneAt(time) {
+  return Math.min(download.steps.length - 1, Math.floor(time / INSTALL_SCENE));
 }
-function pauseInstallCycle() { clearInterval(installTimer); installTimer = null; }
-function resumeInstallCycle() {
-  if (!installInView || motion.matches || installTimer || document.hidden) return;
-  installTimer = setInterval(() => renderInstallStep(installStep + 1), 2600);
+const clamp01 = value => Math.max(0, Math.min(1, value));
+const clickPulse = (value, start, peak, end) => {
+  if (value <= start || value >= end) return 0;
+  return value < peak ? (value - start) / (peak - start) : (end - value) / (end - peak);
+};
+function renderInstallStep(time, fromPlayback = false) {
+  const step = installSceneAt(time);
+  installWalkthrough.dataset.step = String(step);
+  installWalkthrough.querySelectorAll('.download-scene').forEach(scene => {
+    const index = Number(scene.dataset.installScene);
+    const current = index === step;
+    scene.hidden = !current;
+    scene.querySelectorAll('[data-install-field]').forEach(field => {
+      field.textContent = download.steps[index][field.dataset.installField];
+    });
+  });
+  installSteps.forEach((button, index) => button.setAttribute('aria-pressed', String(index === step)));
+  text('install-current', download.steps[step].action);
+  const sceneElapsed = fromPlayback ? time - step * INSTALL_SCENE : 0;
+  const sceneProgress = fromPlayback ? sceneElapsed / INSTALL_SCENE : 0;
+  const overall = fromPlayback ? time / INSTALL_TOTAL : step / download.steps.length;
+  $('install-progress-fill').style.transform = `scaleX(${overall})`;
+  installWalkthrough.style.setProperty('--scene-progress', String(sceneProgress));
+  installWalkthrough.style.setProperty('--drag-progress', String(clamp01(sceneProgress / .75)));
+  installWalkthrough.style.setProperty('--icon-approach', String(clamp01(sceneProgress / .45)));
+  installWalkthrough.style.setProperty('--settings-approach', String(clamp01(sceneProgress / .65)));
+  installWalkthrough.style.setProperty('--click-one', String(step === 3 ? clickPulse(sceneProgress, .52, .59, .66) : clickPulse(sceneProgress, .48, .54, .60)));
+  installWalkthrough.style.setProperty('--click-two', String(step === 2 ? clickPulse(sceneProgress, .66, .72, .78) : 0));
+  const seconds = Math.floor((fromPlayback ? time : step * INSTALL_SCENE) / 1000);
+  $('install-time').textContent = `0:${String(seconds).padStart(2, '0')} / 0:12`;
+}
+function renderInstallControls() {
+  const play = $('install-play');
+  const atEnd = installTime >= INSTALL_TOTAL;
+  const label = motion.matches ? (atEnd ? '重播' : '下一幕') : installPlaying ? '暫停' : atEnd ? '重播' : '播放';
+  play.replaceChildren(icon(installPlaying && !motion.matches ? 'Pause' : atEnd || motion.matches ? 'RotateCcw' : 'Play'), Object.assign(document.createElement('span'), { textContent: label }));
+  play.setAttribute('aria-pressed', String(installPlaying));
+  play.setAttribute('aria-label', label);
+  play.title = label;
+}
+function stopInstallLoop() {
+  if (installFrame) cancelAnimationFrame(installFrame);
+  installFrame = 0;
+  installLastTick = 0;
+}
+function pauseInstall(fromUser = true) {
+  installPlaying = false;
+  stopInstallLoop();
+  installWalkthrough.dataset.playing = 'false';
+  renderInstallControls();
+  if (fromUser) installWalkthrough.dataset.manualPaused = 'true';
+}
+function playInstall() {
+  if (motion.matches) {
+    const next = (installSceneAt(installTime) + 1) % download.steps.length;
+    installTime = next * INSTALL_SCENE;
+    renderInstallStep(installTime);
+    renderInstallControls();
+    return;
+  }
+  if (!installInView || document.hidden) return;
+  if (installTime >= INSTALL_TOTAL) installTime = 0;
+  installPlaying = true;
+  installWalkthrough.dataset.playing = 'true';
+  installWalkthrough.dataset.manualPaused = 'false';
+  renderInstallControls();
+  installLastTick = performance.now();
+  const advance = now => {
+    if (!installPlaying) return;
+    installTime = Math.min(INSTALL_TOTAL, installTime + now - installLastTick);
+    installLastTick = now;
+    renderInstallStep(installTime, true);
+    if (installTime >= INSTALL_TOTAL) {
+      pauseInstall(false);
+      return;
+    }
+    installFrame = requestAnimationFrame(advance);
+  };
+  installFrame = requestAnimationFrame(advance);
+}
+function selectInstallStep(index) {
+  pauseInstall();
+  installTime = index * INSTALL_SCENE;
+  renderInstallStep(installTime);
+  renderInstallControls();
 }
 installSteps.forEach((button, index) => {
-  button.addEventListener('click', () => { pauseInstallCycle(); renderInstallStep(index); });
-  button.addEventListener('focus', () => { pauseInstallCycle(); renderInstallStep(index); });
-  button.addEventListener('pointerenter', () => { pauseInstallCycle(); renderInstallStep(index); });
-  button.addEventListener('pointerleave', resumeInstallCycle);
+  button.addEventListener('click', () => selectInstallStep(index));
+  button.addEventListener('focus', () => selectInstallStep(index));
+  button.addEventListener('pointerenter', () => selectInstallStep(index));
 });
-installWalkthrough.addEventListener('pointerenter', pauseInstallCycle);
-installWalkthrough.addEventListener('pointerleave', resumeInstallCycle);
+$('install-play').addEventListener('click', () => {
+  if (installPlaying && !motion.matches) pauseInstall();
+  else if (motion.matches && installTime >= INSTALL_TOTAL) selectInstallStep(0);
+  else playInstall();
+});
+$('install-replay').addEventListener('click', () => {
+  pauseInstall(false);
+  installTime = 0;
+  renderInstallStep(0);
+  if (!motion.matches) playInstall();
+  else renderInstallControls();
+});
+installWalkthrough.addEventListener('pointerenter', () => pauseInstall());
+installWalkthrough.addEventListener('keydown', event => {
+  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+  event.preventDefault();
+  const current = installSceneAt(installTime);
+  const next = event.key === 'ArrowRight' ? current + 1 : current + download.steps.length - 1;
+  selectInstallStep(next % download.steps.length);
+});
 new IntersectionObserver(entries => {
+  const wasInView = installInView;
   installInView = entries.some(entry => entry.isIntersecting);
-  if (installInView) resumeInstallCycle();
-  else pauseInstallCycle();
+  if (wasInView && !installInView) pauseInstall(false);
 }, { threshold: .25 }).observe(installWalkthrough);
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) pauseInstallCycle();
-  else resumeInstallCycle();
+  if (document.hidden) pauseInstall(false);
 });
+installWalkthrough.setAttribute('aria-label', `四步安裝示意：${download.steps.map(step => step.title).join('、')}`);
 renderInstallStep(0);
+renderInstallControls();
 content.beta.details.forEach(([title, body], index) => {
   const detail = document.createElement('details');
   const summary = document.createElement('summary'); summary.textContent = title;
@@ -346,6 +464,18 @@ document.addEventListener('visibilitychange', () => {
   else if (scenario === 'review') scenarioTimer = setTimeout(() => { scenario = 'confirmed'; render(); }, motion.matches ? 0 : 1400);
 });
 motion.addEventListener('change', () => { pause(); render(); });
+
+function settleInitialHash() {
+  if (!initialHash) return;
+  const target = document.querySelector(initialHash);
+  if (!target) return;
+  requestAnimationFrame(() => {
+    const top = target.getBoundingClientRect().top + window.scrollY - 32;
+    window.scrollTo({ top, behavior: 'instant' });
+  });
+}
+if (document.readyState === 'complete') settleInitialHash();
+else window.addEventListener('load', settleInitialHash, { once: true });
 
 function selectFormat(value) {
   format = value; text('export-panel', formatExample(format));

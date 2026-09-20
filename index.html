@@ -23,36 +23,44 @@
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy wrap">
+      <div class="hero-inner wrap">
+      <div class="hero-copy">
         <p class="eyebrow"><span class="status-dot"></span> 廣東話製作工具 <span class="divider">/</span> MAC BETA</p>
         <h1 id="hero-title">Cantonese <br>Transcript Studio<span class="title-dot">.</span></h1>
         <p class="hero-subtitle" data-content="subtitle"></p>
         <p class="hero-intro" data-content="intro"></p>
         <div class="hero-actions"><button type="button" class="button primary" id="download-hero" data-download-cta disabled><i data-icon="Download"></i> <span data-download-label></span></button><a class="text-link" href="#lazy-camman" id="hero-demo"><i data-icon="Play"></i> 睇 Lazy Camman 示範</a></div>
       </div>
-      <div class="hero-media wrap">
+      <div class="hero-media">
+        <figure class="hero-illustration">
+          <img src="assets/lazycamman-tutorial-short-poster.jpg" width="1920" height="1080" alt="四位講者嘅簡約線條插圖，顏色對應電腦入面四個講者格位" fetchpriority="high">
+          <figcaption><span>動畫示意</span><span>非產品實測畫面</span></figcaption>
+        </figure>
         <button class="screenshot-button" id="open-screenshot" aria-label="放大 CTS 真實字幕編輯畫面">
           <img src="assets/cts-subtitle-editor.jpg" width="1100" height="740" alt="CTS 真實字幕編輯器：影片預覽、字幕段落、時間軸及樣式設定" fetchpriority="high">
           <span class="image-expand"><i data-icon="Maximize2"></i> 放大畫面</span>
         </button>
-        <p class="image-caption"><span><span class="small-dot"></span> APP 實際畫面</span><span>字幕編輯器 · 測試片段</span></p>
+        <p class="image-caption"><span><span class="small-dot"></span> 實際畫面</span><span>字幕編輯器 · 測試片段</span></p>
+      </div>
       </div>
     </section>
 
     <section id="features" class="features wrap section-space" aria-labelledby="features-title">
       <div class="section-heading"><p class="eyebrow">由錄音到交片</p><h2 id="features-title">少啲搬來搬去，<br>多啲時間做作品。</h2></div>
-      <div class="feature-grid">
-        <article><span class="feature-number">01 / TRANSCRIBE</span><i class="feature-icon" data-icon="FileAudio"></i><h3>錄音，變成逐字稿。</h3><p>匯入廣東話影音，整理成可閱讀嘅文字。標示需要覆核嘅片段，再由你決定點改。</p><p class="feature-output">實際輸出 <span>純文字逐字稿</span></p></article>
-        <article><span class="feature-number">02 / EDIT & EXPORT</span><i class="feature-icon" data-icon="Captions"></i><h3>字幕，留返你話事。</h3><p>修改文字、時間同樣式。匯出字幕檔，繼續剪片，或者輸出已加字幕嘅影片。</p><p class="feature-output">實際輸出 <span>SRT · VTT · TXT</span></p></article>
-        <article><span class="feature-number">03 / LAZY CAMMAN</span><i class="feature-icon" data-icon="Users"></i><h3>轉人講，你睇得到。</h3><p>先逐位註冊聲音，拍攝時顯示講者名稱、顏色同轉人提示，幫你留意對話。</p><p class="feature-output">實際輸出 <span>講者標籤 · 轉人提示</span></p></article>
+      <div class="quick-flow" aria-label="核心流程">
+        <a href="#feature-demos"><i data-icon="FileAudio"></i><span>輸入</span><small>錄音 · 影片 · 公開網址</small></a>
+        <span class="flow-arrow" aria-hidden="true"></span>
+        <a href="#feature-demos"><i data-icon="Captions"></i><span>整理</span><small>覆核 · 字幕 · 樣式</small></a>
+        <span class="flow-arrow" aria-hidden="true"></span>
+        <a href="#feature-demos"><i data-icon="FileOutput"></i><span>輸出</span><small>逐字稿 · 字幕 · MP4</small></a>
       </div>
       <div id="feature-demos" class="feature-demo-section" aria-labelledby="feature-demos-title">
         <div class="feature-demo-heading">
           <div>
-            <p class="eyebrow">B 風格動畫圖解</p>
-            <h3 id="feature-demos-title">每個功能，先睇佢點行。</h3>
+            <p class="eyebrow">動畫圖解</p>
+            <h3 id="feature-demos-title">由輸入，到你要嘅輸出。</h3>
           </div>
-          <p>十個 10 秒內嘅流程圖解；公開網址匯入會示範支援平台同可揀嘅下載內容。</p>
+          <p>每個分類先睇一個流程；公開網址匯入可以逐個模式切換同重播。</p>
         </div>
         <div class="feature-demo-grid" id="feature-demo-grid"></div>
       </div>
@@ -91,7 +99,7 @@
         <div class="story" id="story" data-scene="0" data-mode="tutorial">
           <div class="story-top"><span id="scene-counter">01 / 05</span><span id="scene-label"></span><span class="story-duration">15 秒教學</span></div>
           <div class="stage" id="stage">
-            <div class="interview-scene" id="interview-scene"><video id="tutorial-video" src="assets/lazycamman-tutorial-short.mp4" poster="assets/lazycamman-tutorial-short-poster.jpg" width="1920" height="1080" preload="metadata" playsinline aria-label="Lazy Camman 15 秒 B 風格教學動畫：由四人訪問、設定、逐位註冊到轉人提示"></video><p class="film-boundary">動畫示意 · 非即時辨認結果</p></div>
+            <div class="interview-scene" id="interview-scene"><video id="tutorial-video" src="assets/lazycamman-tutorial-short.mp4" poster="assets/lazycamman-tutorial-short-poster.jpg" width="1920" height="1080" preload="metadata" playsinline aria-label="Lazy Camman 15 秒教學動畫：由四人訪問、設定、逐位註冊到轉人提示"></video><p class="film-boundary">動畫示意 · 非即時辨認結果</p></div>
             <div class="app-demo" id="app-demo" aria-label="Lazy Camman 示範畫面">
               <div class="app-demo-bar"><span class="window-dots" aria-hidden="true"><b></b><b></b><b></b></span><span id="demo-app-name"></span><span class="demo-badge">示範</span></div>
               <div class="app-demo-body"><div class="demo-heading"><span class="demo-section-label" id="demo-section-label"></span><span id="roster-count"></span></div><div class="roster" id="roster"></div>
@@ -110,7 +118,66 @@
         <p class="demo-boundary"><i data-icon="Info"></i> 現有功能係講者提示；相機同 gimbal 仍然由你控制。網頁示範唔會錄音。</p>
       </div>
     </section>
-    <section id="beta" class="beta-section section-space wrap" aria-labelledby="beta-title"><div class="beta-intro"><p class="eyebrow">清楚知道，而家去到邊</p><h2 id="beta-title"></h2><span class="beta-status"><i data-icon="Clock3"></i><span id="beta-status"></span></span><p id="beta-body"></p></div><div class="beta-download"><div class="download-panel"><div class="download-cta-row"><button type="button" class="button primary" id="download-beta" data-download-cta disabled><i data-icon="Download"></i> <span data-download-label></span></button><span class="download-note" id="download-note"></span></div><ul class="download-specs" id="download-specs"></ul><details class="download-meta" id="download-meta-wrapper"><summary>模型同空間細節</summary><p id="download-meta"></p></details><p class="install-warning" id="install-warning"></p></div><div class="download-walkthrough" id="download-walkthrough" role="img" aria-label="四步安裝動畫：下載 ZIP、解壓並拖入 Applications、雙擊開一次，再到系統設定選 Open Anyway"><div class="download-scene" data-install-scene="0"><span class="download-step-number">01</span><div class="download-art" aria-hidden="true"><span class="dl-browser"></span><span class="dl-zip">ZIP</span><span class="dl-progress"><i></i></span></div><p>下載 ZIP</p></div><div class="download-scene" data-install-scene="1"><span class="download-step-number">02</span><div class="download-art" aria-hidden="true"><span class="dl-folder"></span><span class="dl-app">CTS</span><span class="dl-cursor"></span></div><p>放入 Applications</p></div><div class="download-scene" data-install-scene="2"><span class="download-step-number">03</span><div class="download-art" aria-hidden="true"><span class="dl-window"></span><span class="dl-shield"></span></div><p>雙擊開一次</p></div><div class="download-scene" data-install-scene="3"><span class="download-step-number">04</span><div class="download-art" aria-hidden="true"><span class="dl-settings"></span><span class="dl-open">Open Anyway</span></div><p>允許開啟</p></div></div><ol class="install-steps" id="install-steps"></ol><p class="install-warning damaged-warning" id="damaged-warning"></p><a class="text-link apple-support" id="apple-support" target="_blank" rel="noopener noreferrer">Apple 官方 Open Anyway 教學 <i data-icon="ArrowUpRight"></i></a><div class="beta-details" id="beta-details"></div></div></section>
+    <section id="beta" class="beta-section section-space" aria-labelledby="beta-title">
+      <div class="wrap">
+        <div class="beta-header">
+          <div class="beta-intro">
+            <p class="eyebrow">清楚知道，而家去到邊</p>
+            <h2 id="beta-title"></h2>
+            <span class="beta-status"><i data-icon="Clock3"></i><span id="beta-status"></span></span>
+            <p id="beta-body"></p>
+          </div>
+          <div class="download-panel">
+            <div class="download-cta-row">
+              <button type="button" class="button primary" id="download-beta" data-download-cta disabled><i data-icon="Download"></i> <span data-download-label></span></button>
+              <span class="download-note" id="download-note"></span>
+            </div>
+            <ul class="download-specs" id="download-specs"></ul>
+            <details class="download-meta" id="download-meta-wrapper"><summary>模型同空間細節</summary><p id="download-meta"></p></details>
+            <p class="install-warning" id="install-warning"></p>
+          </div>
+        </div>
+        <div class="beta-download">
+          <div class="download-theater">
+            <div class="download-walkthrough" id="download-walkthrough" data-step="0" data-playing="false" role="group" aria-roledescription="安裝劇場" aria-label="四步安裝示意">
+              <div class="download-scene" data-install-scene="0">
+                <span class="download-step-number">01</span>
+                <div class="download-art" aria-hidden="true"><span class="dl-browser"><b data-install-field="target"></b></span><span class="dl-zip">ZIP</span><span class="dl-progress"><i></i></span></div>
+                <p class="scene-copy"><span data-install-field="action"></span></p>
+              </div>
+              <div class="download-scene" data-install-scene="1">
+                <span class="download-step-number">02</span>
+                <div class="download-art" aria-hidden="true"><span class="dl-folder dl-from"><b data-install-field="targetFrom"></b></span><span class="dl-route"></span><span class="dl-folder dl-to"><b data-install-field="targetTo"></b></span><span class="dl-app">CTS.app</span><span class="dl-cursor"></span></div>
+                <p class="scene-copy"><span data-install-field="action"></span></p>
+              </div>
+              <div class="download-scene" data-install-scene="2">
+                <span class="download-step-number">03</span>
+                <div class="download-art" aria-hidden="true"><span class="dl-app-window"><b data-install-field="target"></b></span><span class="dl-app-target"><span class="dl-app-icon">CTS Beta</span><i class="dl-click-ripple" data-click="1"></i><i class="dl-click-ripple" data-click="2"></i></span><span class="dl-block"><b data-install-field="result"></b></span><span class="dl-cursor"></span></div>
+                <p class="scene-copy"><span data-install-field="action"></span></p>
+              </div>
+              <div class="download-scene" data-install-scene="3">
+                <span class="download-step-number">04</span>
+                <div class="download-art" aria-hidden="true"><span class="dl-settings"><b data-install-field="target"></b><span class="dl-open">Open Anyway<i class="dl-click-ripple" data-click="1"></i></span></span><span class="dl-cursor"></span></div>
+                <p class="scene-copy"><span data-install-field="action"></span></p>
+              </div>
+            </div>
+            <div class="theater-controls">
+              <button type="button" class="control-button primary-control" id="install-play" aria-pressed="false"><i data-icon="Play"></i><span>播放</span></button>
+              <button type="button" class="control-button" id="install-replay"><i data-icon="RotateCcw"></i><span>重播</span></button>
+              <span class="theater-progress" role="progressbar" aria-labelledby="install-time"><span id="install-progress-fill"></span></span>
+              <output id="install-time">0:00 / 0:12</output>
+            </div>
+          </div>
+          <aside class="install-sidebar">
+            <p class="install-current" id="install-current"></p>
+            <ol class="install-steps" id="install-steps"></ol>
+            <p class="install-warning damaged-warning" id="damaged-warning"></p>
+            <a class="text-link apple-support" id="apple-support" target="_blank" rel="noopener noreferrer">Apple 官方 Open Anyway 教學 <i data-icon="ArrowUpRight"></i></a>
+            <div class="beta-details" id="beta-details"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="site-footer wrap"><a class="wordmark" href="#">CTS<span class="wordmark-note">CANTONESE TRANSCRIPT STUDIO</span></a><span>為廣東話創作而做。</span><a class="text-link" href="https://github.com/yinstagram/cantonese-transcript-studio-beta" target="_blank" rel="noopener noreferrer">GitHub <i data-icon="ArrowUpRight"></i></a></footer>
   <dialog id="screenshot-dialog" aria-label="CTS 字幕編輯器真實畫面"><button class="icon-button dialog-close" id="close-screenshot" aria-label="關閉放大畫面" title="關閉"><i data-icon="X"></i></button><img src="assets/cts-subtitle-editor.jpg" width="1100" height="740" alt="放大嘅 CTS 真實字幕編輯器測試片段"><p>CTS 實際畫面 · 測試片段</p></dialog>

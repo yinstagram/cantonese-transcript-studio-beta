@@ -75,7 +75,7 @@ test('website markup renders the catalog from the single feature authority', asy
   assert.ok(styles.includes('.not-provided'));
 });
 
-test('every category has a B-style ten-second animated demonstration', () => {
+test('every category has a concise animated demonstration', () => {
   for (const category of catalog.categories) {
     const demo = category.demo;
     assert.ok(demo, `${category.id}.demo`);
@@ -88,7 +88,9 @@ test('every category has a B-style ten-second animated demonstration', () => {
   assert.deepEqual(importDemo.platforms, [
     'YouTube', 'Instagram', 'Threads', 'X', 'TikTok', 'Facebook', 'Reddit', 'Bilibili'
   ]);
-  assert.deepEqual(importDemo.modes, ['影片', '音訊', '字幕', '全部']);
+  assert.deepEqual(importDemo.modes, ['影片', '音訊', '字幕']);
+  assert.deepEqual(Object.keys(importDemo.modeOutputs), importDemo.modes);
+  for (const output of Object.values(importDemo.modeOutputs)) assert.match(output, /示意|^MP4|^M4A|^SRT/);
 });
 
 test('animated feature demos render once and honor reduced motion', async () => {
@@ -108,11 +110,24 @@ test('animated feature demos render once and honor reduced motion', async () => 
   assert.match(styles, /animation:none!important/);
 });
 
-test('site provides the B-style favicon referenced by the page', async () => {
+test('site provides the waveform favicon referenced by the page', async () => {
   const html = await readFile('index.html', 'utf8');
   const favicon = await stat('assets/favicon.svg');
 
   assert.match(html, /<link rel="icon" href="assets\/favicon\.svg" type="image\/svg\+xml">/);
   assert.ok(!html.includes('favicon.ico'));
   assert.ok(favicon.isFile() && favicon.size > 100);
+});
+
+test('hero uses the illustration first and keeps the real screenshot secondary', async () => {
+  const html = await readFile('index.html', 'utf8');
+  const illustration = html.indexOf('assets/lazycamman-tutorial-short-poster.jpg');
+  const screenshot = html.indexOf('assets/cts-subtitle-editor.jpg');
+  assert.ok(illustration >= 0 && screenshot > illustration);
+  assert.match(html, /<figure class="hero-illustration">/);
+  assert.match(html, /動畫示意/);
+  assert.ok(html.includes('id="open-screenshot"'));
+  assert.match(html, /<h3 id="feature-demos-title">由輸入，到你要嘅輸出。<\/h3>/);
+  assert.ok(html.includes('class="quick-flow"'));
+  assert.ok(!html.includes('B 風格'));
 });

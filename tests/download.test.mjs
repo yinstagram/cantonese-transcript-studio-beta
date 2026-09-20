@@ -40,16 +40,15 @@ test('friend beta install guidance is concise, safe, and complete', () => {
   assert.match(download.requirementsDetail, /唔會預先附/);
   assert.ok(!('requirements' in download), 'requirements must not exist as a second authority');
   assert.equal(download.steps.length, 4);
-  assert.deepEqual(download.steps.map(([title]) => title), [
-    '下載 ZIP', '解壓並放入 Applications', '雙擊開一次', 'Open Anyway'
+  assert.deepEqual(download.steps.map(step => step.title), [
+    '下載 ZIP', '解壓並放入 Applications', '雙擊開一次', '允許開啟'
   ]);
-  assert.match(download.steps[0][1], /保留原始檔/);
-  assert.match(download.steps[1][1], /CTS Beta/);
-  assert.match(download.steps[1][1], /Applications/);
-  assert.match(download.steps[2][1], /macOS 封鎖/);
-  assert.match(download.steps[3][1], /系統設定/);
-  assert.match(download.steps[3][1], /私隱與保安/);
-  assert.match(download.steps[3][1], /強制開啟／仍要打開/);
+  assert.deepEqual(download.steps.map(step => [step.action, step.target, step.result]), [
+    ['下載朋友測試版 ZIP', 'Downloads', '原始 ZIP 已保留喺 Downloads'],
+    ['先解壓，再將 CTS Beta 拖入 Applications', 'Downloads → Applications', 'Applications 入面見到 CTS Beta'],
+    ['雙擊 CTS Beta', 'CTS Beta', 'macOS 顯示被封鎖提示'],
+    ['系統設定 → 私隱與保安 → Open Anyway', 'Privacy & Security', '返回 CTS Beta 再開一次']
+  ]);
   assert.equal(download.warning, '朋友測試版，未經 Apple 公證。');
   assert.match(download.damagedWarning, /已損壞|惡意軟件/);
   assert.match(download.damagedWarning, /唔好繼續開啟/);
@@ -73,12 +72,32 @@ test('markup keeps download metadata in one file and noscript honest', async () 
   assert.ok(html.includes('id="download-beta"'));
   assert.ok(html.includes('id="install-steps"'));
   assert.ok(html.includes('id="download-walkthrough"'));
+  assert.ok(html.includes('id="install-play"'));
+  assert.ok(html.includes('id="install-replay"'));
+  assert.ok(html.includes('id="install-time"'));
+  assert.ok(html.includes('id="install-current"'));
   assert.ok(html.includes('id="damaged-warning"'));
+  assert.ok(html.includes('class="skip-link"'));
+  assert.match(styles, /\.skip-link\{top:10px;opacity:0;pointer-events:none;transform:translateY\(-180%\)\}/);
+  assert.match(styles, /\.skip-link:focus\{opacity:1;pointer-events:auto;transform:none\}/);
   assert.ok(app.includes('renderInstallStep(0)'));
-  assert.ok(app.includes("button.addEventListener('focus'"));
+  assert.ok(app.includes('const INSTALL_TOTAL = 12000'));
+  assert.ok(app.includes('function pauseInstall(fromUser = true)'));
+  assert.ok(app.includes('installWalkthrough.dataset.manualPaused'));
+  assert.ok(app.includes('scene.hidden = !current'));
+  assert.ok(app.includes("text('install-current', download.steps[step].action)"));
+  assert.ok(app.includes("installWalkthrough.addEventListener('pointerenter', () => pauseInstall())"));
+  assert.ok(!app.includes("installWalkthrough.addEventListener('pointerleave'"));
   assert.match(styles, /\.download-walkthrough/);
   assert.match(styles, /\.install-steps button\[aria-pressed=true\]/);
-  assert.match(styles, /animation:installProgress/);
+  assert.match(styles, /--scene-progress/);
+  assert.match(styles, /--drag-progress/);
+  assert.match(styles, /--icon-approach/);
+  assert.match(styles, /--settings-approach/);
+  assert.ok(html.includes('class="dl-app-target"'));
+  assert.ok(html.includes('class="dl-settings"><b data-install-field="target"></b><span class="dl-open">'));
+  assert.ok(!html.includes('>動作<'));
+  assert.ok(!html.includes('cursor 雙擊'));
   assert.ok(html.includes('下載 Beta'));
   assert.ok(html.includes('開啟 JavaScript 後可以下載 Beta'));
   assert.ok(!html.includes('公開下載準備中'));
