@@ -35,14 +35,21 @@ export const content = {
     times: [['00:00:01,000', '00:00:04,000'], ['00:00:04,500', '00:00:07,000']]
   },
   beta: {
-    title: 'Beta，仲喺打磨。', status: '朋友測試版可下載',
+    title: 'Beta，仲喺打磨。', status: 'v0.8.22 朋友測試版可下載',
     body: '已完成本機隔離環境基本測試；未喺另一部乾淨 Mac 驗證，請保留原始檔。',
+    updates: [
+      'SRT、VTT、TXT 預設唔再強制加入 Speaker 1；想要講者名先自行開啟選項。',
+      '字幕編輯加入剪片式 timeline，可以邊聽邊改，並一鍵套用 AI 修正建議。',
+      '新增 SRT、VTT、TXT 字幕格式互轉。',
+      '第一次開 App 會出四步 B 風格動畫新手引導，逐步帶住用輸入、覆核、Lazy Camman 同匯出。',
+      '時間碼只能估算時會明確標示要覆核，唔會靜靜當成高信心結果。'
+    ],
     download: {
       ready: true,
-      url: 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.21-friend-beta.1/CantoneseTranscriptStudio-0.8.21-friend-beta-arm64.zip',
+      url: 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.22-friend-beta.2/CantoneseTranscriptStudio-0.8.22-friend-beta-arm64.zip',
       preparingLabel: '下載準備中',
       readyLabel: '下載朋友測試版 ZIP',
-      note: 'v0.8.21 · Build 45 · ZIP 211MB',
+      note: 'v0.8.22 · Build 47 · ZIP 約 211MB',
       requirementsQuick: ['Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'],
       requirementsDetail: '首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
       steps: [
@@ -53,12 +60,12 @@ export const content = {
           result: '原始 ZIP 已保留喺 Downloads'
         },
         {
-          title: '解壓並放入 Applications',
-          action: '先解壓，再將 CTS Beta 拖入 Applications',
-          target: 'Downloads → Applications',
+          title: '刪舊版並放入 Applications',
+          action: '先將舊 CTS Beta 拖去 Trash；再解壓新版，拖入 Applications',
+          target: 'Applications 舊版 → Trash；Downloads 新版 → Applications',
           targetFrom: 'Downloads',
           targetTo: 'Applications',
-          result: 'Applications 入面見到 CTS Beta'
+          result: 'Applications 只保留一個新 CTS Beta'
         },
         {
           title: '雙擊開一次',

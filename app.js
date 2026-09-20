@@ -177,6 +177,11 @@ catalog.notProvided.items.forEach(item => {
 text('simulation-label', ui.simulated); text('demo-app-name', ui.app); text('time-note', ui.compressed);
 text('example-label', content.examples.label);
 text('beta-title', content.beta.title); text('beta-status', content.beta.status); text('beta-body', content.beta.body);
+content.beta.updates.forEach(update => {
+  const item = document.createElement('li');
+  item.textContent = update;
+  $('release-updates').append(item);
+});
 const download = content.beta.download;
 const downloadState = releaseDownload(download);
 document.querySelectorAll('[data-download-cta]').forEach(button => {

@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { content, releaseDownload } from '../content.js';
 
-const expectedUrl = 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.21-friend-beta.1/CantoneseTranscriptStudio-0.8.21-friend-beta-arm64.zip';
+const expectedUrl = 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.22-friend-beta.2/CantoneseTranscriptStudio-0.8.22-friend-beta-arm64.zip';
 
 test('verified friend beta download is active and closed state stays actionless', () => {
   const state = releaseDownload(content.beta.download);
@@ -11,7 +11,7 @@ test('verified friend beta download is active and closed state stays actionless'
   assert.equal(state.ready, true);
   assert.equal(state.href, expectedUrl);
   assert.equal(state.label, '下載朋友測試版 ZIP');
-  assert.equal(content.beta.status, '朋友測試版可下載');
+  assert.equal(content.beta.status, 'v0.8.22 朋友測試版可下載');
   assert.match(content.beta.body, /已完成本機隔離環境基本測試/);
   assert.match(content.beta.body, /未喺另一部乾淨 Mac 驗證/);
   assert.match(content.beta.body, /請保留原始檔/);
@@ -31,7 +31,7 @@ test('the ready state uses the single release URL authority', () => {
 
 test('friend beta install guidance is concise, safe, and complete', () => {
   const download = content.beta.download;
-  assert.equal(download.note, 'v0.8.21 · Build 45 · ZIP 211MB');
+  assert.equal(download.note, 'v0.8.22 · Build 47 · ZIP 約 211MB');
   assert.deepEqual(download.requirementsQuick, [
     'Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'
   ]);
@@ -41,11 +41,11 @@ test('friend beta install guidance is concise, safe, and complete', () => {
   assert.ok(!('requirements' in download), 'requirements must not exist as a second authority');
   assert.equal(download.steps.length, 4);
   assert.deepEqual(download.steps.map(step => step.title), [
-    '下載 ZIP', '解壓並放入 Applications', '雙擊開一次', '允許開啟'
+    '下載 ZIP', '刪舊版並放入 Applications', '雙擊開一次', '允許開啟'
   ]);
   assert.deepEqual(download.steps.map(step => [step.action, step.target, step.result]), [
     ['下載朋友測試版 ZIP', 'Downloads', '原始 ZIP 已保留喺 Downloads'],
-    ['先解壓，再將 CTS Beta 拖入 Applications', 'Downloads → Applications', 'Applications 入面見到 CTS Beta'],
+    ['先將舊 CTS Beta 拖去 Trash；再解壓新版，拖入 Applications', 'Applications 舊版 → Trash；Downloads 新版 → Applications', 'Applications 只保留一個新 CTS Beta'],
     ['雙擊 CTS Beta', 'CTS Beta', 'macOS 顯示被封鎖提示'],
     ['系統設定 → 私隱與保安 → Open Anyway', 'Privacy & Security', '返回 CTS Beta 再開一次']
   ]);
@@ -54,6 +54,12 @@ test('friend beta install guidance is concise, safe, and complete', () => {
   assert.match(download.damagedWarning, /唔好繼續開啟/);
   assert.match(download.damagedWarning, /聯絡 Yin/);
   assert.equal(download.supportUrl, 'https://support.apple.com/zh-hk/102445');
+  assert.equal(content.beta.updates.length, 5);
+  assert.match(content.beta.updates[0], /預設唔再強制加入 Speaker 1/);
+  assert.match(content.beta.updates[1], /邊聽邊改/);
+  assert.match(content.beta.updates[2], /格式互轉/);
+  assert.match(content.beta.updates[3], /動畫新手引導/);
+  assert.match(content.beta.updates[4], /明確標示要覆核/);
 
   const details = Object.fromEntries(content.beta.details);
   assert.match(details['測試狀態'], /唔代表所有功能已完成測試/);
@@ -66,6 +72,9 @@ test('markup keeps download metadata in one file and noscript honest', async () 
   const html = await readFile('index.html', 'utf8');
   const app = await readFile('app.js', 'utf8');
   const styles = await readFile('styles.css', 'utf8');
+  const share = await stat('assets/cts-share-v0.8.22.jpg');
+  assert.ok(share.isFile());
+  assert.ok(share.size > 50000);
   const ctaCount = (html.match(/data-download-cta/g) || []).length;
   assert.equal(ctaCount, 2);
   assert.ok(html.includes('id="download-hero"'));
@@ -77,6 +86,10 @@ test('markup keeps download metadata in one file and noscript honest', async () 
   assert.ok(html.includes('id="install-time"'));
   assert.ok(html.includes('id="install-current"'));
   assert.ok(html.includes('id="damaged-warning"'));
+  assert.ok(html.includes('id="release-updates"'));
+  assert.ok(html.includes('未有 OTA 自動更新'));
+  assert.ok(html.includes('assets/cts-share-v0.8.22.jpg'));
+  assert.ok(!html.includes('assets/interview-guests.webp'));
   assert.ok(html.includes('class="skip-link"'));
   assert.match(styles, /\.skip-link\{top:10px;opacity:0;pointer-events:none;transform:translateY\(-180%\)\}/);
   assert.match(styles, /\.skip-link:focus\{opacity:1;pointer-events:auto;transform:none\}/);
