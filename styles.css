@@ -210,3 +210,83 @@
 @media(max-width:1000px){.feature-demo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-demo-card[data-category-id=import]{grid-column:span 2}.feature-demo-heading{grid-template-columns:1fr;gap:13px;align-items:start}}
 @media(max-width:900px){.feature-demo-section{margin-top:44px;padding-top:32px}.feature-demo-heading h3{font-size:27px}}
 @media(max-width:700px){.feature-demo-grid{grid-template-columns:1fr}.feature-demo-card[data-category-id=import],.feature-demo-card[data-category-id=camman]{grid-column:auto}.demo-stage{min-height:220px;padding:14px}.download-options{grid-template-columns:repeat(2,1fr)}.download-options span:nth-child(2){border-right:0}.download-options span:nth-child(1),.download-options span:nth-child(2){border-bottom:1px solid var(--b-line)}.url-text{min-width:0;font-size:11px}.format-chip:nth-child(4),.format-chip:nth-child(6){display:none}.burned-file{right:31%;top:44%}.source-lines,.insight-result{width:44%}.insight-arrow{left:38%;width:20%}.cam-laptop{width:94px;grid-template-columns:repeat(4,15px)}.cam-people{grid-template-columns:repeat(2,24px)}.cam-people i{width:24px;height:37px}}
+
+/* Unified B-style download walkthrough and site micro-interactions */
+.site-header{background:radial-gradient(circle at 1px 1px,#e2e8e3 1px,transparent 0) 0 0/20px 20px,#fff}
+.brand-symbol{display:flex;align-items:flex-end;gap:2px;border:1px solid var(--b-ink);border-radius:7px;background:#fff;padding:4px;box-shadow:2px 2px 0#28332912;transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.brand-symbol i{display:block;width:3px;border-radius:99px;background:var(--green)}
+.brand-symbol i:nth-child(1){height:10px;background:var(--b-sky)}
+.brand-symbol i:nth-child(2){height:17px;background:var(--b-mint)}
+.brand-symbol i:nth-child(3){height:13px;background:var(--b-peach)}
+.brand-symbol i:nth-child(4){height:20px;background:var(--green)}
+.wordmark:hover .brand-symbol{transform:translateY(-1px) rotate(-2deg)}
+.wordmark:active .brand-symbol{transform:translateY(1px) scale(.97)}
+.button{transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s,background .22s}
+.primary{box-shadow:0 5px 18px#147c6420}
+.primary:hover{transform:translateY(-1px);box-shadow:0 9px 25px#147c6430}
+.primary:active{transform:translateY(1px) scale(.99);box-shadow:0 3px 10px#147c6425}
+.feature-demo-card,.catalog-card{transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+.feature-demo-card:hover,.catalog-card:hover{transform:translateY(-2px);border-color:#c1cfc5;box-shadow:0 10px 30px#28332912}
+.demo-more{transition:color .2s,background .2s}
+.demo-more:hover{background:#f1f7f3}
+
+.beta-section{align-items:start}
+.beta-download{display:grid;gap:18px}
+.download-panel{min-width:0;padding:18px;border:1px solid var(--b-line);border-radius:7px;background:var(--b-panel);box-shadow:0 5px 24px#2833290a}
+.download-specs{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:15px 0 0;padding:0}
+.download-specs li{font-size:10px;line-height:1;padding:7px 9px;border:1px solid var(--b-line);border-radius:4px;color:var(--b-muted);background:#fbfcfa}
+.download-meta{margin:13px 0 0;border:1px dashed var(--b-line);border-radius:5px;background:#fbfcfa;color:var(--b-muted)}
+.download-meta summary{cursor:pointer;min-height:38px;display:flex;align-items:center;padding:0 11px;font-size:12px;font-weight:500}
+.download-meta p{padding:0 11px 11px;font-size:12px;line-height:1.7}
+.install-warning{display:flex;align-items:center;gap:8px;margin:15px 0 0;padding:9px 11px;border:1px solid #e2cf92;border-radius:5px;background:#fdf7e8;color:var(--amber);font-size:11.5px}
+.install-warning::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--amber)}
+.download-walkthrough{position:relative;width:100%;min-height:270px;aspect-ratio:16/8;overflow:hidden;border:1px solid var(--b-ink);border-radius:7px;background:radial-gradient(circle at 1px 1px,#e2e8e3 1px,transparent 0) 0 0/18px 18px,var(--b-paper);box-shadow:3px 3px 0#28332912}
+.download-scene{position:absolute;inset:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;padding:16px;opacity:0;transform:translateY(12px) scale(.985);pointer-events:none;transition:opacity .42s,transform .52s cubic-bezier(.2,.7,.2,1)}
+.download-walkthrough[data-step="0"] .download-scene[data-install-scene="0"],.download-walkthrough[data-step="1"] .download-scene[data-install-scene="1"],.download-walkthrough[data-step="2"] .download-scene[data-install-scene="2"],.download-walkthrough[data-step="3"] .download-scene[data-install-scene="3"]{opacity:1;transform:none}
+.download-step-number{justify-self:start;font-size:10px;font-variant-numeric:tabular-nums;color:var(--b-muted);padding:5px 7px;border:1px solid var(--b-line);border-radius:3px;background:#fff}
+.download-art{position:relative;min-width:0}
+.download-scene>p{justify-self:center;margin:0 0 3px;font-size:13px;font-weight:600;color:var(--b-ink)}
+.download-scene p:not(.download-step-number){text-align:center}
+
+.dl-browser,.dl-folder,.dl-window,.dl-settings{position:absolute;border:1px solid var(--b-ink);border-radius:5px;background:#fff;box-shadow:3px 3px 0#28332912}
+.dl-browser{left:13%;right:13%;top:6%;bottom:31%}
+.dl-browser::before{content:"";position:absolute;left:0;right:0;top:0;height:24%;border-bottom:1px dashed var(--b-line);background:linear-gradient(#fff,#fbfcfa)}
+.dl-zip{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);padding:9px 13px;border:1px solid var(--b-ink);border-radius:4px;background:var(--b-sky);font-size:11px;font-weight:650;box-shadow:3px 3px 0#28332912;animation:installFloat 2.6s ease-in-out infinite}
+.dl-progress{position:absolute;left:21%;right:21%;bottom:13%;height:5px;border-radius:99px;background:#e2e7e2;overflow:hidden}
+.dl-progress i{display:block;width:100%;height:100%;border-radius:inherit;background:var(--green);transform-origin:left;animation:installProgress 2.6s cubic-bezier(.35,.1,.25,1) infinite}
+
+.dl-folder{left:11%;top:21%;width:35%;height:59%;background:#fbfcfa}
+.dl-folder::before{content:"";position:absolute;left:-1px;top:-9px;width:39%;height:9px;border:1px solid var(--b-ink);border-bottom:0;border-radius:4px 4px 0 0;background:#f3f6f3}
+.dl-folder::after{content:"Applications";position:absolute;left:8px;right:8px;bottom:8px;font-size:9px;color:var(--b-muted);text-align:center}
+.dl-app{position:absolute;right:20%;top:36%;width:26%;height:35%;display:grid;place-items:center;border:1px solid var(--b-ink);border-radius:5px;background:var(--b-mint);font-size:11px;font-weight:650;box-shadow:3px 3px 0#28332912;animation:installApp 2.6s cubic-bezier(.2,.7,.2,1) infinite}
+.dl-cursor{position:absolute;right:15%;top:52%;width:13px;height:19px;border-left:2px solid var(--b-ink);border-bottom:2px solid var(--b-ink);border-radius:1px;transform:rotate(-12deg);animation:installCursor 2.6s ease-in-out infinite}
+
+.dl-window{left:24%;right:24%;top:12%;bottom:27%;background:#fbfcfa}
+.dl-window::before{content:"";position:absolute;left:0;right:0;top:0;height:25%;border-bottom:1px dashed var(--b-line);background:linear-gradient(#fff,#fbfcfa)}
+.dl-shield{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);width:54px;height:61px;border:1px solid var(--b-ink);border-radius:27px 27px 5px 5px;background:var(--b-amber);display:grid;place-items:center;box-shadow:3px 3px 0#28332912;animation:installFloat 2.6s ease-in-out infinite}
+.dl-shield::before{content:"!";font-size:20px;font-weight:700;color:#6d4c10}
+
+.dl-settings{left:12%;top:24%;width:31%;height:55%;background:#fbfcfa}
+.dl-settings::before{content:"Privacy & Security";position:absolute;left:9px;right:9px;top:9px;font-size:8.5px;color:var(--b-muted);border-bottom:1px dashed var(--b-line);padding-bottom:7px}
+.dl-settings::after{content:"";position:absolute;left:9px;right:9px;bottom:11px;height:5px;border-radius:99px;background:#e2e7e2;box-shadow:0 -11px 0 #dfe7e2}
+.dl-open{position:absolute;right:15%;top:44%;padding:10px 12px;border:1px solid var(--b-ink);border-radius:4px;background:var(--b-mint);font-size:10.5px;font-weight:650;white-space:nowrap;box-shadow:3px 3px 0#28332912;animation:installOpen 2.6s ease-in-out infinite}
+
+.install-steps{display:grid;gap:7px;margin:0}
+.install-steps li{border:0;padding:0}
+.install-steps button{width:100%;min-height:48px;display:grid;gap:4px;padding:11px 13px;border:1px solid var(--b-line);border-radius:5px;background:#fff;text-align:left;transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,background .2s,box-shadow .2s}
+.install-steps button:hover{border-color:var(--green);background:#f7faf7}
+.install-steps button:active{transform:translateY(1px)}
+.install-steps button[aria-pressed=true]{border-color:var(--green);background:#eef7f2;box-shadow:0 4px 14px#147c6418}
+.install-steps h3{font-size:14px}
+.install-steps p{font-size:12px;color:var(--b-muted);line-height:1.65}
+.damaged-warning{margin-top:0;background:#fdf7e8;border-color:#e2cf92}
+.apple-support{margin-top:2px}
+
+@keyframes installFloat{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-4px)}}
+@keyframes installProgress{0%{transform:scaleX(.04);opacity:.55}72%,88%{transform:scaleX(.78);opacity:1}100%{transform:scaleX(1);opacity:1}}
+@keyframes installApp{0%,24%{transform:translateY(0)}52%,76%{transform:translateY(-7px)}100%{transform:translateY(0)}}
+@keyframes installCursor{0%,24%{transform:translate(5px,3px) rotate(-12deg)}52%,76%{transform:translate(-15px,-10px) rotate(-12deg)}100%{transform:translate(5px,3px) rotate(-12deg)}}
+@keyframes installOpen{0%,42%{transform:translateY(4px) scale(.96);opacity:.55}68%,88%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(4px) scale(.96);opacity:.55}}
+
+@media(max-width:900px){.beta-section{align-items:start}.download-walkthrough{min-height:250px}.dl-open{font-size:10px;padding:9px 10px}}
+@media(max-width:600px){.download-panel{padding:15px}.download-walkthrough{aspect-ratio:auto;min-height:245px}.download-step-number{font-size:9px;padding:4px 6px}.download-scene{padding:13px;gap:6px}.download-scene>p{font-size:12px}.dl-folder{width:39%}.dl-app{right:16%;width:30%;font-size:10px}.dl-settings{width:36%}.dl-open{right:13%;top:47%;font-size:9.5px}.install-steps h3{font-size:13px}.install-steps p{font-size:11.5px}}

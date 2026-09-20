@@ -43,11 +43,13 @@ export const content = {
       preparingLabel: '下載準備中',
       readyLabel: '下載朋友測試版 ZIP',
       note: 'v0.8.21 · Build 45 · ZIP 211MB',
-      requirements: 'Apple Silicon Mac · macOS 26.2 或以上 · 建議 16GB RAM、預留 20GB 可用空間。首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
+      requirementsQuick: ['Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'],
+      requirementsDetail: '首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
       steps: [
-        ['下載同安裝', '下載 ZIP，解壓，再將 Cantonese Transcript Studio Beta 拖入 Applications。'],
-        ['雙擊開啟一次', '雙擊 Cantonese Transcript Studio Beta；如果見到被封鎖，繼續下一步。'],
-        ['強制開啟／仍要打開（Open Anyway）', '打開系統設定 → 私隱與保安 → 強制開啟／仍要打開（Open Anyway）；如要求登入就登入，再確認開啟。']
+        ['下載 ZIP', '下載朋友測試版 ZIP，保留原始檔。'],
+        ['解壓並放入 Applications', '解壓後，將 CTS Beta 拖入 Applications。'],
+        ['雙擊開一次', '如果 macOS 封鎖，先去下一步。'],
+        ['Open Anyway', '系統設定 → 私隱與保安 → 強制開啟／仍要打開。']
       ],
       warning: '朋友測試版，未經 Apple 公證。',
       damagedWarning: '如果系統提示「已損壞」或「惡意軟件」，唔好繼續開啟，直接聯絡 Yin。',

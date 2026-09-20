@@ -172,15 +172,55 @@ document.querySelectorAll('[data-download-cta]').forEach(button => {
     if (state.ready && state.href) window.location.assign(state.href);
   });
 });
-text('download-note', download.note); text('download-meta', download.requirements);
+text('download-note', download.note); text('download-meta', download.requirementsDetail);
+download.requirementsQuick.forEach(requirement => {
+  const chip = document.createElement('li');
+  chip.textContent = requirement;
+  $('download-specs').append(chip);
+});
 text('install-warning', download.warning); text('damaged-warning', download.damagedWarning);
 $('apple-support').href = download.supportUrl;
 download.steps.forEach(([title, body]) => {
   const item = document.createElement('li');
+  const button = document.createElement('button');
+  button.type = 'button';
   const heading = document.createElement('h3'); heading.textContent = title;
   const paragraph = document.createElement('p'); paragraph.textContent = body;
-  item.append(heading, paragraph); $('install-steps').append(item);
+  button.append(heading, paragraph); item.append(button); $('install-steps').append(item);
 });
+const installSteps = [...document.querySelectorAll('#install-steps button')];
+const installWalkthrough = $('download-walkthrough');
+let installStep = 0;
+let installTimer;
+let installInView = false;
+function renderInstallStep(index) {
+  installStep = (index + installSteps.length) % installSteps.length;
+  installWalkthrough.dataset.step = String(installStep);
+  installSteps.forEach((button, i) => button.setAttribute('aria-pressed', String(i === installStep)));
+}
+function pauseInstallCycle() { clearInterval(installTimer); installTimer = null; }
+function resumeInstallCycle() {
+  if (!installInView || motion.matches || installTimer || document.hidden) return;
+  installTimer = setInterval(() => renderInstallStep(installStep + 1), 2600);
+}
+installSteps.forEach((button, index) => {
+  button.addEventListener('click', () => { pauseInstallCycle(); renderInstallStep(index); });
+  button.addEventListener('focus', () => { pauseInstallCycle(); renderInstallStep(index); });
+  button.addEventListener('pointerenter', () => { pauseInstallCycle(); renderInstallStep(index); });
+  button.addEventListener('pointerleave', resumeInstallCycle);
+});
+installWalkthrough.addEventListener('pointerenter', pauseInstallCycle);
+installWalkthrough.addEventListener('pointerleave', resumeInstallCycle);
+new IntersectionObserver(entries => {
+  installInView = entries.some(entry => entry.isIntersecting);
+  if (installInView) resumeInstallCycle();
+  else pauseInstallCycle();
+}, { threshold: .25 }).observe(installWalkthrough);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) pauseInstallCycle();
+  else resumeInstallCycle();
+});
+renderInstallStep(0);
 content.beta.details.forEach(([title, body], index) => {
   const detail = document.createElement('details');
   const summary = document.createElement('summary'); summary.textContent = title;
