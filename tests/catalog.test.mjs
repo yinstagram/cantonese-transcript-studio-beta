@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { catalog, featuresByCategory } from '../features.js';
 
 const requiredCategories = [
@@ -73,4 +73,46 @@ test('website markup renders the catalog from the single feature authority', asy
   assert.ok(app.includes("evidenceLabels[feature.evidence]"));
   assert.ok(styles.includes('.catalog-category'));
   assert.ok(styles.includes('.not-provided'));
+});
+
+test('every category has a B-style ten-second animated demonstration', () => {
+  for (const category of catalog.categories) {
+    const demo = category.demo;
+    assert.ok(demo, `${category.id}.demo`);
+    assert.ok(demo.hook.trim().length > 0, `${category.id}.hook`);
+    assert.ok(demo.steps.length >= 2 && demo.steps.length <= 4, `${category.id}.steps`);
+    assert.ok(demo.output.trim().length > 0, `${category.id}.output`);
+  }
+
+  const importDemo = catalog.categories.find(category => category.id === 'import').demo;
+  assert.deepEqual(importDemo.platforms, [
+    'YouTube', 'Instagram', 'Threads', 'X', 'TikTok', 'Facebook', 'Reddit', 'Bilibili'
+  ]);
+  assert.deepEqual(importDemo.modes, ['影片', '音訊', '字幕', '全部']);
+});
+
+test('animated feature demos render once and honor reduced motion', async () => {
+  const html = await readFile('index.html', 'utf8');
+  const app = await readFile('app.js', 'utf8');
+  const styles = await readFile('styles.css', 'utf8');
+
+  assert.ok(html.includes('id="feature-demo-grid"'));
+  assert.ok(app.includes('function demoVisual(id)'));
+  assert.ok(app.includes('renderFeatureDemos();'));
+  for (const category of catalog.categories) {
+    assert.ok(app.includes(`if (id === '${category.id}')`), category.id);
+  }
+  assert.match(app, /data-open-category="\$\{category\.id\}"/);
+  assert.match(styles, /animation:bPacket 10s/);
+  assert.match(styles, /@media\(prefers-reduced-motion:reduce\)/);
+  assert.match(styles, /animation:none!important/);
+});
+
+test('site provides the B-style favicon referenced by the page', async () => {
+  const html = await readFile('index.html', 'utf8');
+  const favicon = await stat('assets/favicon.svg');
+
+  assert.match(html, /<link rel="icon" href="assets\/favicon\.svg" type="image\/svg\+xml">/);
+  assert.ok(!html.includes('favicon.ico'));
+  assert.ok(favicon.isFile() && favicon.size > 100);
 });

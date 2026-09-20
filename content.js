@@ -16,18 +16,18 @@ export const content = {
     start: '開始 Lazy Camman', enrolled: '已註冊', notEnrolled: '未註冊',
     listening: '正在聆聽', review: '核對中', reviewDetail: '偵測到另一把聲，核對中…',
     confirmed: '講者已轉換', uncertain: '未確定講者', now: '而家',
-    simulated: '互動示範，非即時辨認', compressed: '註冊片段已加快；實際每人約 10 秒',
+    simulated: '互動示範，非即時辨認', compressed: '短片已加快；實際每人約 10 秒',
     same: '同一位講者繼續講，唔會重複提示。',
     unknownDetail: '呢個示範顯示辨認未有把握時嘅狀態。實際效果會受收音環境影響。',
     ready: '四位講者已就緒', liveDetail: '畫面顯示已登錄講者嘅名稱、顏色同轉人提示。',
     play: '播放教學', pause: '暫停', replay: '重播', previous: '上一幕', nextScene: '下一幕'
   },
   scenes: [
-    { start: 0, end: 5, title: '四個人，一場訪問。', detail: '拍攝時，你想知道邊位接住講。', label: '訪問現場' },
-    { start: 5, end: 9, title: '先記低每一把聲。', detail: '喺 Lazy Camman 建立 project，設定講者名稱同顏色。', label: '設定拍攝' },
-    { start: 9, end: 21, title: '逐位講，逐位記。', detail: '每人約 10 秒。完成一位，再手動開始下一位。', label: '逐位註冊' },
-    { start: 21, end: 25, title: '人齊，就可以開始。', detail: '全部講者完成註冊，先可以開始今次辨認。', label: '開始拍攝' },
-    { start: 25, end: 35, title: '邊個接住講，一眼睇到。', detail: '由核對到確認，跟住名稱同顏色留意轉人。', label: '講者提示' }
+    { start: 0, end: 2, title: '四個人，一場訪問。', detail: '拍攝時，你想知道邊位接住講。', label: '訪問現場' },
+    { start: 2, end: 4, title: '先記低每一把聲。', detail: '建立 project，設定講者名稱同顏色。', label: '設定拍攝' },
+    { start: 4, end: 10.4, title: '逐位講，逐位記。', detail: '完成一位，再開始下一位。', label: '逐位註冊' },
+    { start: 10.4, end: 12.4, title: '人齊，就可以開始。', detail: '全部講者完成註冊，先可以開始辨認。', label: '開始拍攝' },
+    { start: 12.4, end: 15, title: '邊個接住講，一眼睇到。', detail: '由核對到確認，留意名稱同顏色。', label: '講者提示' }
   ],
   examples: {
     label: '格式示例 · 非實測轉錄結果',

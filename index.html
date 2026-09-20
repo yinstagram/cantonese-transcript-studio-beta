@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Cantonese Transcript Studio：Mac 上嘅廣東話轉錄、字幕編輯同 Lazy Camman 講者提示。睇教學，再親手試互動示範。">
   <meta name="theme-color" content="#f5f7f5">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta property="og:title" content="Cantonese Transcript Studio">
   <meta property="og:description" content="整理錄音、編輯字幕，拍攝時知道邊個接住講。">
   <meta property="og:type" content="website">
@@ -45,6 +46,16 @@
         <article><span class="feature-number">02 / EDIT & EXPORT</span><i class="feature-icon" data-icon="Captions"></i><h3>字幕，留返你話事。</h3><p>修改文字、時間同樣式。匯出字幕檔，繼續剪片，或者輸出已加字幕嘅影片。</p><p class="feature-output">實際輸出 <span>SRT · VTT · TXT</span></p></article>
         <article><span class="feature-number">03 / LAZY CAMMAN</span><i class="feature-icon" data-icon="Users"></i><h3>轉人講，你睇得到。</h3><p>先逐位註冊聲音，拍攝時顯示講者名稱、顏色同轉人提示，幫你留意對話。</p><p class="feature-output">實際輸出 <span>講者標籤 · 轉人提示</span></p></article>
       </div>
+      <div id="feature-demos" class="feature-demo-section" aria-labelledby="feature-demos-title">
+        <div class="feature-demo-heading">
+          <div>
+            <p class="eyebrow">B 風格動畫圖解</p>
+            <h3 id="feature-demos-title">每個功能，先睇佢點行。</h3>
+          </div>
+          <p>十個 10 秒內嘅流程圖解；公開網址匯入會示範支援平台同可揀嘅下載內容。</p>
+        </div>
+        <div class="feature-demo-grid" id="feature-demo-grid"></div>
+      </div>
       <div class="export-example">
         <div class="export-description"><p class="eyebrow">帶得走嘅檔案</p><h3>下一步，返去剪片。</h3><p>揀個格式，睇吓匯出檔案嘅樣。</p><p class="muted example-label" id="example-label"></p></div>
         <div class="export-tool" aria-label="字幕格式示例">
@@ -78,9 +89,9 @@
       <div class="wrap">
         <div class="lazy-heading"><div><p class="eyebrow">拍攝現場，多一個提示</p><h2 id="lazy-title">Lazy Camman<span class="title-dot">.</span></h2><p class="section-intro">先認聲，再留意邊個接住講。</p></div><span class="demo-label"><i data-icon="MonitorPlay"></i><span id="simulation-label"></span></span></div>
         <div class="story" id="story" data-scene="0" data-mode="tutorial">
-          <div class="story-top"><span id="scene-counter">01 / 05</span><span id="scene-label"></span><span class="story-duration">35 秒教學</span></div>
+          <div class="story-top"><span id="scene-counter">01 / 05</span><span id="scene-label"></span><span class="story-duration">15 秒教學</span></div>
           <div class="stage" id="stage">
-            <div class="interview-scene" id="interview-scene"><video id="tutorial-video" src="assets/lazycamman-tutorial.mp4" poster="assets/lazycamman-tutorial-poster.jpg" width="1920" height="1080" preload="metadata" playsinline aria-label="Lazy Camman 35 秒 B 風格教學動畫：由四人訪問、設定、逐位註冊到轉人提示"></video><p class="film-boundary">動畫示意 · 非即時辨認結果</p></div>
+            <div class="interview-scene" id="interview-scene"><video id="tutorial-video" src="assets/lazycamman-tutorial-short.mp4" poster="assets/lazycamman-tutorial-short-poster.jpg" width="1920" height="1080" preload="metadata" playsinline aria-label="Lazy Camman 15 秒 B 風格教學動畫：由四人訪問、設定、逐位註冊到轉人提示"></video><p class="film-boundary">動畫示意 · 非即時辨認結果</p></div>
             <div class="app-demo" id="app-demo" aria-label="Lazy Camman 示範畫面">
               <div class="app-demo-bar"><span class="window-dots" aria-hidden="true"><b></b><b></b><b></b></span><span id="demo-app-name"></span><span class="demo-badge">示範</span></div>
               <div class="app-demo-body"><div class="demo-heading"><span class="demo-section-label" id="demo-section-label"></span><span id="roster-count"></span></div><div class="roster" id="roster"></div>
@@ -92,7 +103,7 @@
             <span class="time-note" id="time-note"></span>
           </div>
           <div class="story-description"><h3 id="scene-title"></h3><p id="scene-description"></p></div>
-          <div class="story-controls"><button class="icon-button play-control" id="play" title="播放教學" aria-label="播放教學"><i data-icon="Play"></i></button><button class="icon-button" id="replay" title="重播" aria-label="重播"><i data-icon="RotateCcw"></i></button><input id="story-seek" type="range" min="0" max="35" step="0.1" value="0" aria-label="教學進度"><output id="story-time">0:00 / 0:35</output><button class="icon-button" id="previous-scene" title="上一幕" aria-label="上一幕"><i data-icon="ChevronLeft"></i></button><button class="icon-button" id="next-scene" title="下一幕" aria-label="下一幕"><i data-icon="ChevronRight"></i></button></div>
+          <div class="story-controls"><button class="icon-button play-control" id="play" title="播放教學" aria-label="播放教學"><i data-icon="Play"></i></button><button class="icon-button" id="replay" title="重播" aria-label="重播"><i data-icon="RotateCcw"></i></button><input id="story-seek" type="range" min="0" max="15" step="0.1" value="0" aria-label="教學進度"><output id="story-time">0:00 / 0:15</output><button class="icon-button" id="previous-scene" title="上一幕" aria-label="上一幕"><i data-icon="ChevronLeft"></i></button><button class="icon-button" id="next-scene" title="下一幕" aria-label="下一幕"><i data-icon="ChevronRight"></i></button></div>
           <div class="scene-nav" id="scene-nav" aria-label="教學步驟"></div>
         </div>
         <div class="try-row"><div><p class="eyebrow">輪到你試</p><h3>唔同情況，畫面點反應？</h3><p>選一個情境，睇上面嘅講者提示。</p></div><div class="scenario-buttons" role="group" aria-label="示範情境"><button data-scenario="switch" aria-pressed="false"><i data-icon="ArrowLeftRight"></i> 轉講者</button><button data-scenario="same" aria-pressed="false"><i data-icon="UserRound"></i> 同一人繼續講</button><button data-scenario="unknown" aria-pressed="false"><i data-icon="CircleHelp"></i> 未確定講者</button></div></div>

@@ -3,7 +3,7 @@
 export const catalog = {
   eyebrow: '完整功能表',
   title: 'App 入面，全部做到啲乜。',
-  intro: '十個分類，每項同一格式：適合咩情況、輸入乜、輸出乜、同使用條件。',
+  intro: '十個分類，每個先睇動畫理解流程；要逐項細節先展開。',
   boundary: '清單由現有 App 功能入口整理；有歷史實測紀錄嘅功能會標明。朋友 Beta 未逐項重新驗證，實際效果視乎你部機、模型同收音環境。',
   labels: {
     situation: '適合咩情況',
@@ -12,16 +12,52 @@ export const catalog = {
     conditions: '條件／限制'
   },
   categories: [
-    { id: 'import', title: '匯入與轉錄', icon: 'FileAudio', summary: '本機檔案、公開網址、批次排隊同歷史紀錄。' },
-    { id: 'review', title: '轉錄覆核', icon: 'Search', summary: '搜尋、時間碼、低信心提示、模型比對同講者標示。' },
-    { id: 'dictionary', title: '個人詞庫', icon: 'BookUser', summary: '人名、專有詞、修正記憶同匯入匯出。' },
-    { id: 'editing', title: '字幕後製', icon: 'Captions', summary: '改字、調時間、重新斷句、講者分配同自動儲存。' },
-    { id: 'style', title: '字幕外觀與翻譯', icon: 'Palette', summary: '字體顏色位置、Brand Kit、安全範圍、雙語同純譯文。' },
-    { id: 'outputs', title: '實際輸出', icon: 'FileOutput', summary: 'TXT、SRT、VTT、JSON、CSV、ASS 同燒字幕 MP4。' },
-    { id: 'insights', title: 'AI 整理', icon: 'Sparkles', summary: '摘要、重點、行動清單、概念解釋同原文依據。' },
-    { id: 'live', title: '現場輔助', icon: 'Mic', summary: '即時字幕、AI 問答輕量提示同訪問提示。' },
-    { id: 'camman', title: 'LazyCamman', icon: 'Users', summary: '建立講者、逐位註冊、轉人提示同未能確認狀態。' },
-    { id: 'settings', title: '自動化與設定', icon: 'Settings', summary: 'Local API、Apple Shortcuts、模型準備同連線邊界。' }
+    {
+      id: 'import', title: '匯入與轉錄', icon: 'FileAudio', summary: '本機檔案、公開網址、批次排隊同歷史紀錄。',
+      demo: {
+        hook: '貼一條公開連結，揀影片、音訊或字幕。',
+        steps: ['貼公開 URL', '揀下載內容', '入隊同睇狀態'],
+        output: '可處理媒體 · 音訊 · 字幕',
+        platforms: ['YouTube', 'Instagram', 'Threads', 'X', 'TikTok', 'Facebook', 'Reddit', 'Bilibili'],
+        modes: ['影片', '音訊', '字幕', '全部']
+      }
+    },
+    {
+      id: 'review', title: '轉錄覆核', icon: 'Search', summary: '搜尋、時間碼、低信心提示、模型比對同講者標示。',
+      demo: { hook: '邊句可疑，先睇邊句。', steps: ['搜尋關鍵字', '睇時間碼', '覆核低信心'], output: '已覆核逐字稿' }
+    },
+    {
+      id: 'dictionary', title: '個人詞庫', icon: 'BookUser', summary: '人名、專有詞、修正記憶同匯入匯出。',
+      demo: { hook: '你嘅名，唔使次次手改。', steps: ['加入正確寫法', '保留修正記憶', '匯出備份'], output: '個人詞庫檔' }
+    },
+    {
+      id: 'editing', title: '字幕後製', icon: 'Captions', summary: '改字、調時間、重新斷句、講者分配同自動儲存。',
+      demo: { hook: '逐字稿變成可交片字幕。', steps: ['改字', '調時間', '重新斷句'], output: '字幕 project' }
+    },
+    {
+      id: 'style', title: '字幕外觀與翻譯', icon: 'Palette', summary: '字體顏色位置、Brand Kit、安全範圍、雙語同純譯文。',
+      demo: { hook: '字幕樣式保持喺安全範圍。', steps: ['揀樣式', '對安全範圍', '出雙語／譯文'], output: '樣式預覽 · 字幕檔' }
+    },
+    {
+      id: 'outputs', title: '實際輸出', icon: 'FileOutput', summary: 'TXT、SRT、VTT、JSON、CSV、ASS 同燒字幕 MP4。',
+      demo: { hook: '同一個 project，交畀下一個流程。', steps: ['揀格式', '核對內容', '匯出檔案'], output: 'TXT · SRT · VTT · JSON · CSV · ASS · MP4' }
+    },
+    {
+      id: 'insights', title: 'AI 整理', icon: 'Sparkles', summary: '摘要、重點、行動清單、概念解釋同原文依據。',
+      demo: { hook: '長對話先變做可跟進清單。', steps: ['讀逐字稿', '摘重點', '連返原文'], output: '摘要 · 行動清單' }
+    },
+    {
+      id: 'live', title: '現場輔助', icon: 'Mic', summary: '即時字幕、AI 問答輕量提示同訪問提示。',
+      demo: { hook: '現場聽唔切，畫面幫你跟。', steps: ['開麥克風', '睇即時字幕', '用短提示'], output: '現場字幕 · 提示卡' }
+    },
+    {
+      id: 'camman', title: 'LazyCamman', icon: 'Users', summary: '建立講者、逐位註冊、轉人提示同未能確認狀態。',
+      demo: { hook: '先認聲，再睇邊個接住講。', steps: ['建立講者', '逐位註冊', '顯示轉人'], output: '講者標籤 · 轉人提示' }
+    },
+    {
+      id: 'settings', title: '自動化與設定', icon: 'Settings', summary: 'Local API、Apple Shortcuts、模型準備同連線邊界。',
+      demo: { hook: '本機流程可以接去 Shortcuts。', steps: ['開 Local API', '配置 Shortcut', '準備模型'], output: '本機工作 · 匯出文字' }
+    }
   ],
   features: [
     { id: 'media-import', category: 'import', title: '音訊／影片與批次轉錄', situation: '整理錄音或影片對話', input: '本機影音檔案', output: '排隊處理後嘅逐字稿', conditions: '需準備模型；批次完成唔代表文字準確，仍要覆核。', evidence: 'implemented' },

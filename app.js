@@ -21,6 +21,33 @@ function icon(name, className = '') {
   }
   return svg;
 }
+
+function demoVisual(id) {
+  if (id === 'import') {
+    return `
+      <div class="url-shell">
+        <span class="url-text">https://www.youtube.com/watch?v=…</span>
+        <div class="platform-row">${catalog.categories[0].demo.platforms.map(platform => `<span class="platform-chip">${platform}</span>`).join('')}</div>
+        <div class="download-options">${catalog.categories[0].demo.modes.map(mode => `<span>${mode}</span>`).join('')}</div>
+      </div>
+      <div class="flow-path"><span class="flow-packet"></span></div>
+      <div class="import-result"><span>MP4</span><span>M4A</span><span>SRT/VTT</span><span>逐字稿</span></div>
+      <div class="mini-progress"><span></span></div>`;
+  }
+  if (id === 'review') {
+    return `<div class="scan-document"><span class="scan-row">00:01 今天我哋想講…</span><span class="scan-row low">00:04 呢個名詞唔太確定</span><span class="scan-row">00:09 先整理問題</span><span class="scan-lens"></span></div>`;
+  }
+  if (id === 'dictionary') return `<div class="dictionary-stage"><span class="wrong-term">阿 Yin？</span><span class="term-arrow"></span><span class="correct-term">Ng Cho Yin</span><span class="term-book">個人詞庫</span></div>`;
+  if (id === 'editing') return `<div class="editing-stage"><span class="subtitle-preview">先整理問題</span><div class="cute-strip"><i></i><i></i><i></i><i></i></div><span class="autosave-chip">自動儲存</span></div>`;
+  if (id === 'style') return `<div class="style-stage"><div class="safe-frame"><span class="styled-caption">雙語字幕</span><span class="safe-guide"></span></div><div class="style-dots"><i></i><i></i><i></i><i></i></div></div>`;
+  if (id === 'outputs') return `<div class="output-stage"><span class="format-chip">TXT</span><span class="format-chip">SRT</span><span class="format-chip">VTT</span><span class="format-chip">JSON</span><span class="format-chip">CSV</span><span class="format-chip">ASS</span><span class="burned-file">MP4</span></div>`;
+  if (id === 'insights') return `<div class="insight-stage"><div class="source-lines"><i></i><i></i><i></i><i></i></div><span class="insight-arrow"></span><div class="insight-result"><strong>摘要</strong><span>行動 1</span><span>行動 2</span></div></div>`;
+  if (id === 'live') return `<div class="live-stage"><div class="mic-orb"><i></i><i></i><i></i></div><div class="live-caption-lines"><span>而家講緊…</span><i></i><i></i></div><span class="prompt-card">短提示</span></div>`;
+  if (id === 'camman') return `<div class="camman-stage"><div class="cam-people"><i></i><i></i><i></i><i></i></div><div class="cam-laptop"><i></i><i></i><i></i><i></i></div></div>`;
+  if (id === 'settings') return `<div class="settings-stage"><div class="local-api">Local API</div><span class="shortcut-path"></span><div class="model-disk">模型</div><span class="loopback-label">127.0.0.1</span></div>`;
+  return '<div class="demo-placeholder"></div>';
+}
+
 document.querySelectorAll('[data-icon]').forEach(el => el.replaceWith(icon(el.dataset.icon, el.className)));
 document.querySelectorAll('[data-content]').forEach(el => el.textContent = content[el.dataset.content]);
 const evidenceLabels = { implemented: '本機功能', historical: '有歷史實測紀錄' };
@@ -32,7 +59,8 @@ catalog.categories.forEach((category, index) => {
   const items = featuresByCategory(category.id);
   const details = document.createElement('details');
   details.className = 'catalog-category';
-  details.open = index === 0;
+  details.dataset.categoryId = category.id;
+  details.open = false;
   const summary = document.createElement('summary');
   const indexLabel = document.createElement('span');
   indexLabel.className = 'catalog-index';
@@ -85,6 +113,36 @@ catalog.categories.forEach((category, index) => {
   details.append(summary, body);
   $('catalog-list').append(details);
 });
+
+function renderFeatureDemos() {
+  const grid = $('feature-demo-grid');
+  catalog.categories.forEach(category => {
+    const demo = category.demo;
+    const card = document.createElement('article');
+    card.className = 'feature-demo-card';
+    card.dataset.categoryId = category.id;
+    card.innerHTML = `
+      <div class="demo-stage" data-demo="${category.id}" aria-hidden="true">${demoVisual(category.id)}</div>
+      <div class="feature-demo-copy">
+        <p class="eyebrow"><span class="small-dot"></span> ${category.title}</p>
+        <h3>${demo.hook}</h3>
+        <ol class="demo-steps">${demo.steps.map(step => `<li>${step}</li>`).join('')}</ol>
+        <p class="demo-output">${demo.output}</p>
+      </div>
+      <button type="button" class="text-link demo-more" data-open-category="${category.id}">睇細節 <i data-icon="ArrowRight"></i></button>`;
+    const buttonIcon = card.querySelector('[data-icon]');
+    buttonIcon.replaceWith(icon(buttonIcon.dataset.icon, buttonIcon.className));
+    grid.append(card);
+  });
+
+  document.querySelectorAll('[data-open-category]').forEach(button => button.addEventListener('click', () => {
+    const details = document.querySelector(`.catalog-category[data-category-id="${button.dataset.openCategory}"]`);
+    if (!details) return;
+    details.open = true;
+    details.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
+  }));
+}
+renderFeatureDemos();
 catalog.notProvided.items.forEach(item => {
   const listItem = document.createElement('li');
   const itemHeader = document.createElement('div');
@@ -167,7 +225,7 @@ function render() {
     const label = enrolled ? ui.enrolled : ui.notEnrolled;
     if (status.lastElementChild.textContent !== label) { status.replaceChildren(icon(enrolled ? 'Check' : 'Circle'), document.createElement('span')); status.lastElementChild.textContent = label; }
   });
-  let title = ui.setup, detail = '2–15 位講者 · 呢度示範 4 位', action = ui.start;
+  let title = ui.setup, detail = '2-15 位講者 · 呢度示範 4 位', action = ui.start;
   if (s.status === 'recording') { title = `${active.name} · ${ui.enroll}`; detail = ui.record; }
   if (s.status === 'enrolled') { title = `${active.name} · ${ui.enrolled}`; detail = s.active === 3 ? ui.allEnrolled : ui.next; }
   if (s.status === 'ready') { title = ui.ready; detail = ui.allEnrolled; }
@@ -185,7 +243,7 @@ function render() {
   $('enroll-fill').style.width = `${s.progress * 100}%`;
   $('story-seek').value = String(time);
   $('story-seek').setAttribute('aria-valuetext', `${Math.floor(time)} 秒，${scene.label}`);
-  text('story-time', `0:${String(Math.floor(time)).padStart(2, '0')} / 0:35`);
+  text('story-time', `0:${String(Math.floor(time)).padStart(2, '0')} / 0:${String(Math.floor(DURATION)).padStart(2, '0')}`);
   $('previous-scene').disabled = s.scene === 0 && !scenario;
   $('next-scene').disabled = s.scene === 4;
   document.querySelectorAll('#scene-nav button').forEach((el, i) => {
@@ -209,11 +267,12 @@ function seek(value) {
   video.currentTime = Math.max(0, Math.min(DURATION, Number(value) || 0));
   render(); playButton();
 }
-function play() {
+async function play() {
   if (motion.matches) { const s = stateAt(video.currentTime); seek(content.scenes[(s.scene + 1) % 5].start); return; }
   if (!video.paused && !video.ended) { pause(); return; }
   clearScenario();
   if (video.ended || video.currentTime >= DURATION) video.currentTime = 0;
+  if (video.seeking) await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
   video.play().catch(() => { render(); playButton(); });
   if ($('story').getBoundingClientRect().top < 0) $('story').scrollIntoView({behavior:'smooth',block:'start'});
 }
