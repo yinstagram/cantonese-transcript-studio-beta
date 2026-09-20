@@ -7,7 +7,8 @@ const $ = id => document.getElementById(id);
 const text = (id, value) => { if ($(id).textContent !== value) $(id).textContent = value; };
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 const ui = content.ui;
-let time = 0, playing = false, frame = 0, previousTime = 0, scenario = null, scenarioTimer;
+const video = $('tutorial-video');
+let scenario = null, scenarioTimer;
 let format = 'srt', lastAnnouncement = '';
 
 function icon(name, className = '') {
@@ -129,8 +130,6 @@ content.beta.details.forEach(([title, body], index) => {
   detail.append(summary, paragraph); detail.open = index === 0; $('beta-details').append(detail);
 });
 content.speakers.forEach((speaker, index) => {
-  const label = document.createElement('span'); label.className = 'guest-label'; label.textContent = speaker.name;
-  label.style.left = speaker.position; label.style.setProperty('--speaker-color', speaker.color); $('guest-labels').append(label);
   const tile = document.createElement('div'); tile.className = 'speaker-tile'; tile.style.setProperty('--speaker-color', speaker.color);
   const avatar = document.createElement('span'); avatar.className = 'speaker-avatar'; avatar.textContent = speaker.short;
   const name = document.createElement('strong'); name.textContent = speaker.name;
@@ -142,35 +141,19 @@ content.scenes.forEach((scene, index) => {
   button.addEventListener('click', () => seek(scene.start)); button.dataset.scene = String(index); $('scene-nav').append(button);
 });
 
-function positionGuestLabels() {
-  const image = $('guests-image');
-  if (!image.naturalWidth) return;
-  const width = image.clientWidth, height = image.clientHeight;
-  const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
-  const drawnWidth = image.naturalWidth * scale, drawnHeight = image.naturalHeight * scale;
-  document.querySelectorAll('.guest-label').forEach((label, index) => {
-    label.style.left = `${(width - drawnWidth) / 2 + drawnWidth * parseFloat(content.speakers[index].position) / 100}px`;
-    label.style.top = `${(height - drawnHeight) / 2 + drawnHeight * .91}px`;
-  });
-}
-$('guests-image').addEventListener('load', positionGuestLabels);
-new ResizeObserver(positionGuestLabels).observe($('interview-scene'));
-positionGuestLabels();
-
 function announce(value) {
   if (lastAnnouncement !== value) { text('announcer', value); lastAnnouncement = value; }
 }
 function render() {
+  const time = video.currentTime;
   const s = stateAt(time);
   if (scenario) { s.scene = 4; s.enrolled = 4; s.active = scenario === 'unknown' ? -1 : scenario === 'review' || scenario === 'confirmed' ? 1 : 0; s.status = scenario; }
   const scene = content.scenes[s.scene];
   $('story').dataset.scene = String(s.scene);
   $('story').dataset.mode = scenario || time >= DURATION ? 'interactive' : 'tutorial';
-  $('story').dataset.playing = String(playing);
+  $('story').dataset.playing = String(!video.paused && !video.ended);
   const active = content.speakers[s.active];
   $('story').style.setProperty('--speaker-active', active?.color || '#896012');
-  // Camera motion highlights the first guest, then pulls back into setup.
-  $('interview-scene').style.transform = s.scene === 0 && time >= 2 && !motion.matches ? 'translate(20%, 8%) scale(1.45)' : '';
   text('scene-counter', `${String(s.scene + 1).padStart(2, '0')} / 05`); text('scene-label', scene.label);
   text('scene-title', scenario ? '睇吓呢個情況。' : scene.title);
   text('scene-description', scenario ? ui.simulated : scene.detail);
@@ -184,7 +167,6 @@ function render() {
     const label = enrolled ? ui.enrolled : ui.notEnrolled;
     if (status.lastElementChild.textContent !== label) { status.replaceChildren(icon(enrolled ? 'Check' : 'Circle'), document.createElement('span')); status.lastElementChild.textContent = label; }
   });
-  document.querySelectorAll('.guest-label').forEach((el, index) => el.classList.toggle('active', index === s.active));
   let title = ui.setup, detail = '2–15 位講者 · 呢度示範 4 位', action = ui.start;
   if (s.status === 'recording') { title = `${active.name} · ${ui.enroll}`; detail = ui.record; }
   if (s.status === 'enrolled') { title = `${active.name} · ${ui.enrolled}`; detail = s.active === 3 ? ui.allEnrolled : ui.next; }
@@ -212,36 +194,48 @@ function render() {
   announce(`${scene.label}。${title}。${detail}`);
 }
 function playButton() {
+  const playing = !video.paused && !video.ended;
   $('play').replaceChildren(icon(playing ? 'Pause' : 'Play'));
-  const label = motion.matches ? (stateAt(time).scene === content.scenes.length - 1 ? ui.replay : ui.nextScene) : playing ? ui.pause : time >= DURATION ? ui.replay : ui.play;
+  const label = motion.matches ? (stateAt(video.currentTime).scene === content.scenes.length - 1 ? ui.replay : ui.nextScene) : playing ? ui.pause : video.currentTime >= DURATION ? ui.replay : ui.play;
   $('play').setAttribute('aria-label', label); $('play').title = label;
 }
-function pause() { playing = false; cancelAnimationFrame(frame); $('story').dataset.playing = 'false'; playButton(); }
+function pause() { video.pause(); $('story').dataset.playing = 'false'; playButton(); }
 function clearScenario() {
   clearTimeout(scenarioTimer); scenario = null;
   document.querySelectorAll('[data-scenario]').forEach(b => b.setAttribute('aria-pressed', 'false'));
 }
-function seek(value) { pause(); clearScenario(); time = Math.max(0, Math.min(DURATION, Number(value))); render(); playButton(); }
-function tick(now) {
-  if (!playing) return;
-  time = Math.min(DURATION, time + (now - previousTime) / 1000); previousTime = now; render();
-  if (time >= DURATION) pause(); else frame = requestAnimationFrame(tick);
+function seek(value) {
+  pause(); clearScenario();
+  video.currentTime = Math.max(0, Math.min(DURATION, Number(value) || 0));
+  render(); playButton();
 }
 function play() {
-  if (motion.matches) { const s = stateAt(time); seek(content.scenes[(s.scene + 1) % 5].start); return; }
-  if (playing) { pause(); return; }
-  clearScenario(); if (time >= DURATION) time = 0;
-  playing = true; previousTime = performance.now(); playButton(); frame = requestAnimationFrame(tick);
+  if (motion.matches) { const s = stateAt(video.currentTime); seek(content.scenes[(s.scene + 1) % 5].start); return; }
+  if (!video.paused && !video.ended) { pause(); return; }
+  clearScenario();
+  if (video.ended || video.currentTime >= DURATION) video.currentTime = 0;
+  video.play().catch(() => { render(); playButton(); });
   if ($('story').getBoundingClientRect().top < 0) $('story').scrollIntoView({behavior:'smooth',block:'start'});
 }
+for (const eventName of ['loadedmetadata', 'timeupdate', 'seeked', 'play', 'pause', 'ended']) video.addEventListener(eventName, () => { render(); playButton(); });
+video.addEventListener('click', () => {
+  if (motion.matches) {
+    const s = stateAt(video.currentTime);
+    seek(content.scenes[(s.scene + 1) % 5].start);
+  } else play();
+});
 $('play').addEventListener('click', play);
 $('replay').addEventListener('click', () => { seek(0); if (!motion.matches) play(); });
 $('story-seek').addEventListener('input', e => seek(e.target.value));
-$('previous-scene').addEventListener('click', () => seek(content.scenes[Math.max(0, stateAt(time).scene - 1)].start));
-$('next-scene').addEventListener('click', () => seek(content.scenes[Math.min(4, stateAt(time).scene + 1)].start));
-$('hero-demo').addEventListener('click', () => { seek(0); });
+$('previous-scene').addEventListener('click', () => seek(content.scenes[Math.max(0, stateAt(video.currentTime).scene - 1)].start));
+$('next-scene').addEventListener('click', () => seek(content.scenes[Math.min(4, stateAt(video.currentTime).scene + 1)].start));
+$('hero-demo').addEventListener('click', e => {
+  e.preventDefault();
+  seek(0);
+  $('story').scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
+});
 document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click', () => {
-  pause(); clearScenario(); time = DURATION;
+  pause(); clearScenario(); video.currentTime = DURATION;
   button.setAttribute('aria-pressed', 'true');
   scenario = button.dataset.scenario === 'switch' ? 'review' : button.dataset.scenario;
   if (scenario === 'review') scenarioTimer = setTimeout(() => { scenario = 'confirmed'; render(); }, motion.matches ? 0 : 1400);
