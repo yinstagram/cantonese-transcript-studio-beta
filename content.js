@@ -35,21 +35,21 @@ export const content = {
     times: [['00:00:01,000', '00:00:04,000'], ['00:00:04,500', '00:00:07,000']]
   },
   beta: {
-    title: 'Beta，仲喺打磨。', status: 'v0.8.22 朋友測試版可下載',
-    body: '已完成本機隔離環境基本測試；未喺另一部乾淨 Mac 驗證，請保留原始檔。',
+    title: 'Beta，仲喺打磨。', status: 'v0.8.24 朋友測試版可下載',
+    body: 'Build 55 已用乾淨解壓 ZIP 同真實 60 秒純音訊重跑關鍵測試；未在另一部乾淨 Mac 全面驗證，請保留原始檔。',
     updates: [
       'SRT、VTT、TXT 預設唔再強制加入 Speaker 1；想要講者名先自行開啟選項。',
-      '字幕編輯加入剪片式 timeline，可以邊聽邊改，並一鍵套用 AI 修正建議。',
+      '字幕編輯加入剪片式 timeline，可以邊聽邊改，並一鍵套用本機修正建議。',
       '新增 SRT、VTT、TXT 字幕格式互轉。',
       '第一次開 App 會出四步 B 風格動畫新手引導，逐步帶住用輸入、覆核、Lazy Camman 同匯出。',
-      '時間碼只能估算時會明確標示要覆核，唔會靜靜當成高信心結果。'
+      '三重覆核可用純音訊完成；自然斷句會保留原文再重新分段；即時字幕可留低紀錄重開。'
     ],
     download: {
       ready: true,
-      url: 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.22-friend-beta.2/CantoneseTranscriptStudio-0.8.22-friend-beta-arm64.zip',
+      url: 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.24-build55-friend-beta/CantoneseTranscriptStudio-0.8.24-build55-friend-beta-arm64.zip',
       preparingLabel: '下載準備中',
       readyLabel: '下載朋友測試版 ZIP',
-      note: 'v0.8.22 · Build 47 · ZIP 約 211MB',
+      note: 'v0.8.24 · Build 55 · ZIP 約 211MB',
       requirementsQuick: ['Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'],
       requirementsDetail: '首次設定模型約下載 10GB（視乎選擇），唔會預先附喺 ZIP 內；AI 提示需要另行設定本機 runtime。',
       steps: [

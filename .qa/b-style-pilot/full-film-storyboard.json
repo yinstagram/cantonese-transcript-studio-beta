@@ -1,0 +1,52 @@
+{
+  "schema": "cts.lazy-camman-tutorial/v1",
+  "authority": "One storyboard authority for the 35-second source film and the 15-second public cut",
+  "sourceFilm": {
+    "asset": "assets/lazycamman-tutorial.mp4",
+    "durationSeconds": 35,
+    "poster": "assets/lazycamman-tutorial-poster.jpg"
+  },
+  "publicCut": {
+    "asset": "assets/lazycamman-tutorial-short.mp4",
+    "poster": "assets/lazycamman-tutorial-short-poster.jpg",
+    "durationSeconds": 15,
+    "scenes": [
+      {
+        "sourceId": "scene-01-interview",
+        "start": 0,
+        "end": 2,
+        "title": "四個人，一場訪問。"
+      },
+      {
+        "sourceId": "scene-02-setup",
+        "start": 2,
+        "end": 4,
+        "title": "先記低每一把聲。"
+      },
+      {
+        "sourceId": "scene-03-register",
+        "start": 4,
+        "end": 10.4,
+        "title": "逐位講，逐位記。"
+      },
+      {
+        "sourceId": "scene-04-ready",
+        "start": 10.4,
+        "end": 12.4,
+        "title": "人齊，就可以開始。"
+      },
+      {
+        "sourceId": "scene-05-pilot",
+        "start": 12.4,
+        "end": 13.5,
+        "title": "邊個接住講，一眼睇到。"
+      },
+      {
+        "sourceId": "scene-06-switch",
+        "start": 13.5,
+        "end": 15,
+        "title": "講者已轉換。"
+      }
+    ]
+  }
+}

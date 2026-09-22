@@ -1,3 +1,6 @@
-.qa/
+.qa/*
+!.qa/b-style-pilot/
+.qa/b-style-pilot/*
+!.qa/b-style-pilot/full-film-storyboard.json
 node_modules/
 .DS_Store

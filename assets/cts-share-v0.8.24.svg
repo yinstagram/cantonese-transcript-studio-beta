@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <clipPath id="panel"><rect x="810" y="140" width="290" height="190" rx="18"/></clipPath>
+  </defs>
+  <rect width="1200" height="630" fill="#f7f8f5"/>
+  <g fill="none" stroke="#26302b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80 517h1040" opacity=".18"/>
+    <path d="M115 273c25-19 64-28 100-17 26 8 39 24 66 25 34 1 52-17 84-20 43-4 76 13 91 37"/>
+    <path d="M810 258h290M810 421h290M955 258v163" opacity=".22"/>
+  </g>
+  <g font-family="'Avenir Next','PingFang HK','Noto Sans TC',sans-serif">
+    <text x="84" y="125" fill="#26302b" font-size="62" font-weight="700" letter-spacing="0">Cantonese Transcript Studio</text>
+    <text x="86" y="176" fill="#5d6864" font-size="29">由廣東話，去到你嘅下一個作品。</text>
+    <text x="86" y="570" fill="#26302b" font-size="25" font-weight="600">Lazy Camman</text>
+    <text x="86" y="605" fill="#5d6864" font-size="23">四位講者 · 逐位註冊 · 自動提示轉人</text>
+  </g>
+  <g transform="translate(825 155)">
+    <rect width="290" height="190" rx="18" fill="#fff" stroke="#26302b" stroke-width="4"/>
+    <rect x="18" y="28" width="100" height="12" rx="6" fill="#dce2de"/>
+    <rect x="18" y="56" width="66" height="10" rx="5" fill="#dce2de"/>
+    <g transform="translate(20 84)">
+      <circle cx="25" cy="25" r="25" fill="#d9e7f5" stroke="#26302b" stroke-width="3"/>
+      <circle cx="25" cy="20" r="9" fill="#26302b"/><path d="M9 43c5-11 12-16 16-16s11 5 16 16" fill="#3166c5"/>
+    </g>
+    <g transform="translate(84 84)">
+      <circle cx="25" cy="25" r="25" fill="#dcf0e7" stroke="#26302b" stroke-width="3"/>
+      <circle cx="25" cy="20" r="9" fill="#26302b"/><path d="M9 43c5-11 12-16 16-16s11 5 16 16" fill="#147c64"/>
+    </g>
+    <g transform="translate(148 84)">
+      <circle cx="25" cy="25" r="25" fill="#f7dedd" stroke="#26302b" stroke-width="3"/>
+      <circle cx="25" cy="20" r="9" fill="#26302b"/><path d="M9 43c5-11 12-16 16-16s11 5 16 16" fill="#ac4d73"/>
+    </g>
+    <g transform="translate(212 84)">
+      <circle cx="25" cy="25" r="25" fill="#e9e5d8" stroke="#26302b" stroke-width="3"/>
+      <circle cx="25" cy="20" r="9" fill="#26302b"/><path d="M9 43c5-11 12-16 16-16s11 5 16 16" fill="#927117"/>
+    </g>
+  </g>
+  <g stroke="#26302b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(84 306)">
+      <path d="M31 160V206M76 160l31 46M0 160l31 46" opacity=".55"/>
+      <path d="M30 97v41M79 97v41" opacity=".55"/>
+      <rect x="10" y="37" width="84" height="74" rx="26" fill="#d9e7f5"/>
+      <circle cx="52" cy="38" r="27" fill="#f7f8f5"/>
+      <path d="M34 20c8-10 31-13 39-2 5 7 3 14 5 20-7-3-10-11-18-10-9 1-11 8-19 9-5-6-10-11-7-17Z" fill="#26302b"/>
+    </g>
+    <g transform="translate(302 306)">
+      <path d="M31 160V206M76 160l31 46M0 160l31 46" opacity=".55"/>
+      <path d="M30 97v41M79 97v41" opacity=".55"/>
+      <rect x="10" y="37" width="84" height="74" rx="26" fill="#dcf0e7"/>
+      <circle cx="52" cy="38" r="27" fill="#f7f8f5"/>
+      <circle cx="66" cy="19" r="10" fill="#26302b"/><path d="M52 14c12 0 21 8 23 17-8-4-15-9-23-9s-15 5-23 9c2-9 11-17 23-17Z" fill="#26302b"/>
+    </g>
+    <g transform="translate(520 306)">
+      <path d="M31 160V206M76 160l31 46M0 160l31 46" opacity=".55"/>
+      <path d="M30 97v41M79 97v41" opacity=".55"/>
+      <rect x="10" y="37" width="84" height="74" rx="26" fill="#f7dedd"/>
+      <circle cx="52" cy="38" r="27" fill="#f7f8f5"/>
+      <path d="M40 13c13-8 29-5 34 8 4 11-1 19 3 27-9 0-14-8-23-8-11 0-16 7-24 6-4-12-3-25 10-33Z" fill="#26302b"/>
+    </g>
+    <g transform="translate(738 306)">
+      <path d="M31 160V206M76 160l31 46M0 160l31 46" opacity=".55"/>
+      <path d="M30 97v41M79 97v41" opacity=".55"/>
+      <rect x="10" y="37" width="84" height="74" rx="26" fill="#e9e5d8"/>
+      <circle cx="52" cy="38" r="27" fill="#f7f8f5"/>
+      <path d="M37 20c6-10 28-13 36-2 5 7 2 15 4 21-7-2-10-11-18-10-9 1-10 9-18 10-5-6-9-12-4-19Z" fill="#26302b"/>
+    </g>
+  </g>
+  <g fill="none" stroke="#26302b" stroke-width="4" stroke-linecap="round">
+    <path d="M85 474c18-28 37 24 54-4s36 22 54-6 36 18 54-8"/>
+  </g>
+</svg>

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { content, releaseDownload } from '../content.js';
 
-const expectedUrl = 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.22-friend-beta.2/CantoneseTranscriptStudio-0.8.22-friend-beta-arm64.zip';
+const expectedUrl = 'https://github.com/yinstagram/cantonese-transcript-studio-beta/releases/download/v0.8.24-build55-friend-beta/CantoneseTranscriptStudio-0.8.24-build55-friend-beta-arm64.zip';
 
 test('verified friend beta download is active and closed state stays actionless', () => {
   const state = releaseDownload(content.beta.download);
@@ -11,9 +11,10 @@ test('verified friend beta download is active and closed state stays actionless'
   assert.equal(state.ready, true);
   assert.equal(state.href, expectedUrl);
   assert.equal(state.label, '下載朋友測試版 ZIP');
-  assert.equal(content.beta.status, 'v0.8.22 朋友測試版可下載');
-  assert.match(content.beta.body, /已完成本機隔離環境基本測試/);
-  assert.match(content.beta.body, /未喺另一部乾淨 Mac 驗證/);
+  assert.equal(content.beta.status, 'v0.8.24 朋友測試版可下載');
+  assert.match(content.beta.body, /乾淨解壓 ZIP/);
+  assert.match(content.beta.body, /真實 60 秒純音訊/);
+  assert.match(content.beta.body, /未在另一部乾淨 Mac 全面驗證/);
   assert.match(content.beta.body, /請保留原始檔/);
 
   const closed = releaseDownload({ ...content.beta.download, ready: false });
@@ -31,7 +32,7 @@ test('the ready state uses the single release URL authority', () => {
 
 test('friend beta install guidance is concise, safe, and complete', () => {
   const download = content.beta.download;
-  assert.equal(download.note, 'v0.8.22 · Build 47 · ZIP 約 211MB');
+  assert.equal(download.note, 'v0.8.24 · Build 55 · ZIP 約 211MB');
   assert.deepEqual(download.requirementsQuick, [
     'Apple Silicon Mac', 'macOS 26.2 或以上', '建議 16GB RAM', '預留 20GB 空間'
   ]);
@@ -57,9 +58,11 @@ test('friend beta install guidance is concise, safe, and complete', () => {
   assert.equal(content.beta.updates.length, 5);
   assert.match(content.beta.updates[0], /預設唔再強制加入 Speaker 1/);
   assert.match(content.beta.updates[1], /邊聽邊改/);
+  assert.match(content.beta.updates[1], /本機修正建議/);
   assert.match(content.beta.updates[2], /格式互轉/);
   assert.match(content.beta.updates[3], /動畫新手引導/);
-  assert.match(content.beta.updates[4], /明確標示要覆核/);
+  assert.match(content.beta.updates[4], /三重覆核/);
+  assert.match(content.beta.updates[4], /即時字幕可留低紀錄/);
 
   const details = Object.fromEntries(content.beta.details);
   assert.match(details['測試狀態'], /唔代表所有功能已完成測試/);
@@ -72,7 +75,7 @@ test('markup keeps download metadata in one file and noscript honest', async () 
   const html = await readFile('index.html', 'utf8');
   const app = await readFile('app.js', 'utf8');
   const styles = await readFile('styles.css', 'utf8');
-  const share = await stat('assets/cts-share-v0.8.22.jpg');
+  const share = await stat('assets/cts-share-v0.8.24.jpg');
   assert.ok(share.isFile());
   assert.ok(share.size > 50000);
   const ctaCount = (html.match(/data-download-cta/g) || []).length;
@@ -88,7 +91,8 @@ test('markup keeps download metadata in one file and noscript honest', async () 
   assert.ok(html.includes('id="damaged-warning"'));
   assert.ok(html.includes('id="release-updates"'));
   assert.ok(html.includes('未有 OTA 自動更新'));
-  assert.ok(html.includes('assets/cts-share-v0.8.22.jpg'));
+  assert.ok(html.includes('assets/cts-share-v0.8.24.jpg'));
+  assert.ok(!html.includes('cts-share-v0.8.22'));
   assert.ok(!html.includes('assets/interview-guests.webp'));
   assert.ok(html.includes('class="skip-link"'));
   assert.match(styles, /\.skip-link\{top:10px;opacity:0;pointer-events:none;transform:translateY\(-180%\)\}/);
@@ -123,4 +127,14 @@ test('markup keeps download metadata in one file and noscript honest', async () 
     [html, app, JSON.stringify(content)].join('\n'),
     /開啟任何來源|Open Anywhere|sudo\s|spctl\s|--master-disable|xattr\s+-|csrutil\s/i
   );
+});
+
+test('public README release authority matches the website download authority', async () => {
+  const readme = await readFile('README.md', 'utf8');
+  assert.match(readme, /current public prerelease is the v0\.8\.24 friend Beta \(Build 55\)/);
+  assert.match(readme, /211,311,012 bytes/);
+  assert.match(readme, /07617a96d219146f0f486b51f64febb35fe8f0041bb8bf4acada74ec5de544e5/);
+  assert.match(readme, /macOS 26\.2 or later/);
+  assert.doesNotMatch(readme, /current public prerelease is the v0\.8\.21/);
+  assert.doesNotMatch(readme, /deterministic 35-second storyboard/);
 });

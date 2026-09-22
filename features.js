@@ -57,7 +57,7 @@ export const catalog = {
       demo: { hook: '現場聽唔切，畫面幫你跟。', steps: ['開麥克風', '睇即時字幕', '用短提示'], output: '現場字幕 · 提示卡' }
     },
     {
-      id: 'camman', title: 'LazyCamman', icon: 'Users', summary: '建立講者、逐位註冊、轉人提示同未能確認狀態。',
+      id: 'camman', title: 'Lazy Camman', icon: 'Users', summary: '建立講者、逐位註冊、轉人提示同未能確認狀態。',
       demo: { hook: '先認聲，再睇邊個接住講。', steps: ['建立講者', '逐位註冊', '顯示轉人'], output: '講者標籤 · 轉人提示' }
     },
     {
@@ -71,7 +71,7 @@ export const catalog = {
     { id: 'queue-retry-history', category: 'import', title: '排隊、取消、重試、歷史紀錄', situation: '多份檔案或中途失敗', input: '已建立嘅工作', output: '工作狀態、重試入口及歷史結果', conditions: '歷史紀錄唔等於已完成；要睇每份工作狀態。', evidence: 'implemented' },
     { id: 'search-time-confidence', category: 'review', title: '搜尋、時間碼、低信心提示', situation: '快速搵句子及優先覆核可疑段落', input: '已產生嘅逐字稿', output: '搜尋結果、段落時間碼、覆核提示', conditions: '提示唔係準確率保證；冇提示亦可能有錯。', evidence: 'implemented' },
     { id: 'model-consensus', category: 'review', title: '模型比對與共識覆核', situation: '比較唔同辨認結果', input: '已準備模型與錄音／工作結果', output: '比較畫面及候選覆核結果', conditions: '需要額外模型同資源；多模型同意亦唔代表一定正確。', evidence: 'implemented' },
-    { id: 'speaker-labels', category: 'review', title: '講者標示', situation: '整理多人對話', input: '錄音及預計講者設定', output: '段落講者標籤', conditions: '要開啟相關設定；唔好同 LazyCamman 已註冊聲紋身份混為一談。', evidence: 'implemented' },
+    { id: 'speaker-labels', category: 'review', title: '講者標示', situation: '整理多人對話', input: '錄音及預計講者設定', output: '段落講者標籤', conditions: '要開啟相關設定；唔好同 Lazy Camman 已註冊聲紋身份混為一談。', evidence: 'implemented' },
     { id: 'dictionary-terms', category: 'dictionary', title: '人名、專有詞與別名', situation: '同一批名詞經常聽錯', input: '正確寫法與別名', output: '個人修正詞條', conditions: '修正映射唔係任意改寫句子，唔保證每次辨認都正確。', evidence: 'implemented' },
     { id: 'dictionary-memory', category: 'dictionary', title: '修正記憶、學習開關、匯入／匯出', situation: '重用或備份自己嘅詞庫', input: '修正記憶或詞庫檔案', output: '本機詞庫與匯出檔案', conditions: '歷史 RPC 測試唔代表新版 UI 已重新實測；可控制學習及刪除詞條。', evidence: 'historical' },
     { id: 'subtitle-text-time', category: 'editing', title: '改字、調時間與重新斷句', situation: '將逐字稿執成字幕', input: '字幕段落與影音', output: '修改後字幕 project', conditions: '重新斷句後仍要核對時間與意思；未承諾零漂移。', evidence: 'implemented' },
@@ -101,7 +101,7 @@ export const catalog = {
     intro: '網站唔會暗示以下功能已存在。',
     status: '未提供',
     items: [
-      { id: 'gimbal-control', title: '相機／gimbal 自動追蹤控制', note: '而家相機同 gimbal 仍由你控制；LazyCamman 提供嘅係講者提示。' },
+      { id: 'gimbal-control', title: '相機／gimbal 自動追蹤控制', note: '而家相機同 gimbal 仍由你控制；Lazy Camman 提供嘅係講者提示。' },
       { id: 'mobile-background', title: '電話／iPad 背景運行', note: '而家係 Mac App；未提供手機背景偵測或遙控 B 機。' },
       { id: 'multicam-sync', title: '自動多機音訊同步與剪輯 XML', note: '字幕匯出唔等於多機時間線同步；未提供自動剪片 XML。' }
     ]
