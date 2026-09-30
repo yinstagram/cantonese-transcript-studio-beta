@@ -23,7 +23,7 @@
   <a class="skip-link" href="#main">跳到內容</a>
   <header class="site-header">
     <a class="wordmark" href="#" aria-label="CTS 首頁"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span> CTS<span class="wordmark-note">FOR MAC</span></a>
-    <nav aria-label="主要導覽"><a href="#features">功能</a><a href="#lazy-camman">Lazy Camman</a><a href="#beta">下載 Beta <i data-icon="ArrowUpRight"></i></a></nav>
+    <nav aria-label="主要導覽"><a href="#features">功能</a><a href="#lazy-camman">Lazy Camman</a><a href="#queue">要試</a><a href="#beta">下載 Beta <i data-icon="ArrowUpRight"></i></a></nav>
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -120,6 +120,34 @@
         </div>
         <div class="try-row"><div><p class="eyebrow">輪到你試</p><h3>唔同情況，畫面點反應？</h3><p>選一個情境，睇上面嘅講者提示。</p></div><div class="scenario-buttons" role="group" aria-label="示範情境"><button data-scenario="switch" aria-pressed="false"><i data-icon="ArrowLeftRight"></i> 轉講者</button><button data-scenario="same" aria-pressed="false"><i data-icon="UserRound"></i> 同一人繼續講</button><button data-scenario="unknown" aria-pressed="false"><i data-icon="CircleHelp"></i> 未確定講者</button></div></div>
         <p class="demo-boundary"><i data-icon="Info"></i> 現有功能係講者提示；相機同 gimbal 仍然由你控制。網頁示範唔會錄音。</p>
+      </div>
+    </section>
+    <section id="queue" class="queue-section section-space" aria-labelledby="queue-title">
+      <div class="wrap">
+        <div class="section-heading queue-heading">
+          <div>
+            <p class="eyebrow" data-queue-field="eyebrow"></p>
+            <h2 id="queue-title" data-queue-field="title"></h2>
+            <p class="section-intro" data-queue-field="intro"></p>
+          </div>
+          <span class="queue-updated"><i data-icon="Clock3"></i><span data-queue-field="updated"></span></span>
+        </div>
+        <div class="queue-columns">
+          <section class="queue-panel" aria-labelledby="queue-evidence-title">
+            <div class="queue-panel-heading">
+              <h3 id="queue-evidence-title" data-queue-field="evidenceTitle"></h3>
+              <span class="queue-count" id="queue-evidence-count"></span>
+            </div>
+            <div class="queue-evidence-list" id="queue-evidence-list"></div>
+          </section>
+          <section class="queue-panel queue-primary" aria-labelledby="queue-items-title">
+            <div class="queue-panel-heading">
+              <h3 id="queue-items-title" data-queue-field="queueTitle"></h3>
+              <span class="queue-count" id="queue-items-count"></span>
+            </div>
+            <ol class="queue-list" id="queue-list"></ol>
+          </section>
+        </div>
       </div>
     </section>
     <section id="beta" class="beta-section section-space" aria-labelledby="beta-title">

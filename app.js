@@ -1,5 +1,6 @@
 import { content, releaseDownload } from './content.js';
 import { catalog, featuresByCategory } from './features.js';
+import { testQueue } from './queue.js';
 import { icons } from './assets/vendor/icons.js';
 import { DURATION, stateAt, formatExample } from './demo-state.js';
 
@@ -160,6 +161,62 @@ function renderFeatureDemos() {
   }));
 }
 renderFeatureDemos();
+document.querySelectorAll('[data-queue-field]').forEach(el => {
+  el.textContent = testQueue[el.dataset.queueField];
+});
+const queueStatus = testQueue.statuses;
+testQueue.evidence.forEach(item => {
+  const card = document.createElement('article');
+  card.className = 'queue-evidence-card';
+  card.dataset.queueId = item.id;
+  const header = document.createElement('div');
+  const title = document.createElement('h4');
+  title.textContent = item.title;
+  const status = document.createElement('span');
+  status.className = 'queue-status';
+  status.dataset.status = item.status;
+  status.textContent = queueStatus[item.status];
+  header.append(title, status);
+  const result = document.createElement('p');
+  result.textContent = item.result;
+  card.append(header, result);
+  if (item.baseline) {
+    const baseline = document.createElement('p');
+    baseline.className = 'queue-baseline';
+    baseline.textContent = item.baseline;
+    card.append(baseline);
+  }
+  const boundary = document.createElement('p');
+  boundary.className = 'queue-boundary';
+  boundary.textContent = item.boundary;
+  card.append(boundary);
+  $('queue-evidence-list').append(card);
+});
+text('queue-evidence-count', `${testQueue.evidence.length} 項`);
+text('queue-items-count', `${testQueue.items.length} 項`);
+testQueue.items.forEach(item => {
+  const card = document.createElement('li');
+  card.className = 'queue-item';
+  card.dataset.queueId = item.id;
+  const header = document.createElement('div');
+  const priority = document.createElement('span');
+  priority.className = 'queue-priority';
+  priority.textContent = item.priority;
+  const title = document.createElement('h4');
+  title.textContent = item.title;
+  const status = document.createElement('span');
+  status.className = 'queue-status';
+  status.dataset.status = 'queued';
+  status.textContent = queueStatus.queued;
+  header.append(priority, title, status);
+  const task = document.createElement('p');
+  task.textContent = item.task;
+  const output = document.createElement('p');
+  output.className = 'queue-output';
+  output.textContent = `輸出：${item.output}`;
+  card.append(header, task, output);
+  $('queue-list').append(card);
+});
 catalog.notProvided.items.forEach(item => {
   const listItem = document.createElement('li');
   const itemHeader = document.createElement('div');
