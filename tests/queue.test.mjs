@@ -19,7 +19,7 @@ test('queue has the remaining real-product acceptance tasks in priority order', 
   assert.equal(testQueue.updated, '2026-10-02');
   assert.deepEqual(testQueue.items.map(item => item.priority), ['P1', 'P2', 'P3']);
   assert.deepEqual(testQueue.items.map(item => item.id), [
-    'timing-natural-segmentation',
+    'o8-human-playback-review',
     'triple-review-pure-audio',
     'multi-speaker-baseline'
   ]);
@@ -44,6 +44,24 @@ test('completed installed upgrade and edit loop move from queue to evidence', ()
   assert.match(editLoop.result, /SRT 逐 cue/);
   assert.match(editLoop.boundary, /原生 file-picker／drag-drop onboarding/);
   assert.ok(!testQueue.items.some(item => ['installed-upgrade', 'real-edit-loop'].includes(item.id)));
+});
+
+test('O8 automatic gate is separated from human playback acceptance', () => {
+  const gate = testQueue.evidence.find(item => item.id === 'o8-production-timing-gate');
+  const review = testQueue.items.find(item => item.id === 'o8-human-playback-review');
+  assert.ok(gate);
+  assert.ok(review);
+  assert.equal(gate.status, 'completed');
+  assert.match(gate.result, /1,443 cues／10,420 字/);
+  assert.match(gate.result, /1,096 個邊界/);
+  assert.match(gate.result, /end 無早／遲超過 500ms/);
+  assert.match(gate.result, /Speaker 前綴 0/);
+  assert.match(gate.boundary, /17 個指定播放位/);
+  assert.match(gate.boundary, /release verdict 仍未宣告/);
+  assert.match(review.task, /17 個播放位|0:00、0:21/);
+  assert.match(review.task, /文字啱唔啱/);
+  assert.match(review.task, /斷句自然唔自然/);
+  assert.match(review.output, /17 個樣本嘅人手 verdict/);
 });
 
 test('queue section is navigable, rendered from one authority, and styled', async () => {

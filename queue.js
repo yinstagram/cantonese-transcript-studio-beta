@@ -42,15 +42,22 @@ export const testQueue = {
       result: '處理完成 412 cues；TXT／SRT／VTT／JSON／CSV 輸出、integrity seal 及文字交叉檢查有 receipt。',
       baseline: 'YouTube zh-HK 字幕只作 ASR comparison baseline：HK normalized CER 77.4842%、timing median 689ms、P95 4637.776ms、1310／1310 diagnostic fail。',
       boundary: '唔係人工 gold reference，因此唔當準確度 PASS；數值用來定位差異，唔用來宣稱好或差。'
+    },
+    {
+      id: 'o8-production-timing-gate',
+      title: '小薯茄 O8 自動 timing gate',
+      status: 'completed',
+      result: 'Production path 完成 1,443 cues／10,420 字；自然斷句選出 1,096 個邊界，全部文字保留。1,443 個 cue start 完全對位，end 無早／遲超過 500ms，無重疊、倒轉或出界；TXT、timestamp TXT、SRT、VTT、JSON、CSV hash read-back 全部一致，Speaker 前綴 0。',
+      boundary: '只係自動 gate PASS；17 個指定播放位仍要人耳人眼覆核。YouTube 字幕唔係人工 gold，所以最終準確度同 release verdict 仍未宣告。'
     }
   ],
   items: [
     {
-      id: 'timing-natural-segmentation',
+      id: 'o8-human-playback-review',
       priority: 'P1',
-      title: '時間偏移與自然斷句',
-      task: '用小薯茄同一素材量 timing baseline，並觸發真實 fallback 場景，確認自然斷句唔丟字、可 Undo、可保存。',
-      output: '每 cue timing 差異、錯字分類、fallback 狀態同編輯後 project。'
+      title: 'O8 17 個播放位人手覆核',
+      task: '按已選時間位逐段聽返：0:00、0:21、0:25、0:44、1:38、4:40、8:00、10:48、13:56、17:21、20:09、23:02、23:28、26:56、28:33、30:13、31:48。每段答文字啱唔啱、開始有冇遲過半秒、結尾有冇截聲、斷句自然唔自然。',
+      output: '17 個樣本嘅人手 verdict、問題時間碼同修正清單；任何一個 No 就先修再重跑 gate。'
     },
     {
       id: 'triple-review-pure-audio',
