@@ -26,7 +26,7 @@ export const testQueue = {
       title: '安裝版升級與資料保留',
       status: 'verified',
       result: 'Installed App 已升級至 v0.8.24 Build 55（bundle hash 與 candidate 一致）：6,440 job artifacts、192 model assets、3 個 speaker profiles、4 個 YouTube imports、settings 及 correction memory 全部 0 missing／0 changed。',
-      boundary: '單機升級驗收；未覆蓋另一部乾淨 Mac、Keychain 首次遷移或全部歷史 project 逐一開啟。'
+      boundary: '呢項係 10/2 內部升級驗收，唔等同 9/22 公開朋友 ZIP。單機升級驗收；未覆蓋另一部乾淨 Mac、Keychain 首次遷移或全部歷史 project 逐一開啟。'
     },
     {
       id: 'real-edit-loop',
@@ -47,7 +47,7 @@ export const testQueue = {
       id: 'o8-production-timing-gate',
       title: '小薯茄 O8 自動 timing gate',
       status: 'completed',
-      result: 'Production path 完成 1,443 cues／10,420 字；自然斷句選出 1,096 個邊界，全部文字保留。1,443 個 cue start 完全對位，end 無早／遲超過 500ms，無重疊、倒轉或出界；TXT、timestamp TXT、SRT、VTT、JSON、CSV hash read-back 全部一致，Speaker 前綴 0。',
+      result: 'Production path 完成 1,443 cues／10,420 字；自然斷句選出 1,096 個邊界，全部文字保留。1,443 個 cue 與模型字級時間一致；相對模型字級時間，結尾偏差不超過 500ms，無重疊、倒轉或出界；TXT、timestamp TXT、SRT、VTT、JSON、CSV hash read-back 全部一致，Speaker 前綴 0。',
       boundary: '只係自動 gate PASS；17 個指定播放位仍要人耳人眼覆核。YouTube 字幕唔係人工 gold，所以最終準確度同 release verdict 仍未宣告。'
     }
   ],
@@ -57,7 +57,30 @@ export const testQueue = {
       priority: 'P1',
       title: 'O8 17 個播放位人手覆核',
       task: '按已選時間位逐段聽返：0:00、0:21、0:25、0:44、1:38、4:40、8:00、10:48、13:56、17:21、20:09、23:02、23:28、26:56、28:33、30:13、31:48。每段答文字啱唔啱、開始有冇遲過半秒、結尾有冇截聲、斷句自然唔自然。',
-      output: '17 個樣本嘅人手 verdict、問題時間碼同修正清單；任何一個 No 就先修再重跑 gate。'
+      output: '17 個樣本嘅人手 verdict、問題時間碼同修正清單；任何一個 No 就先修再重跑 gate。',
+      candidateSrt: {
+        path: 'assets/o8-candidate-20261002.srt',
+        sha256: '70e73f267a5130baba3eadef0f1f80a3e570789749940aac8273d64e60ca1a96'
+      },
+      reviewPoints: [
+        { label: '0:00', seconds: 0 },
+        { label: '0:21', seconds: 21 },
+        { label: '0:25', seconds: 25 },
+        { label: '0:44', seconds: 44 },
+        { label: '1:38', seconds: 98 },
+        { label: '4:40', seconds: 280 },
+        { label: '8:00', seconds: 480 },
+        { label: '10:48', seconds: 648 },
+        { label: '13:56', seconds: 836 },
+        { label: '17:21', seconds: 1041 },
+        { label: '20:09', seconds: 1209 },
+        { label: '23:02', seconds: 1382 },
+        { label: '23:28', seconds: 1408 },
+        { label: '26:56', seconds: 1616 },
+        { label: '28:33', seconds: 1713 },
+        { label: '30:13', seconds: 1813 },
+        { label: '31:48', seconds: 1908 }
+      ]
     },
     {
       id: 'triple-review-pure-audio',

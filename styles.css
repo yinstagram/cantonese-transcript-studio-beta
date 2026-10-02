@@ -416,6 +416,12 @@ html{scroll-padding-top:32px}
 .queue-baseline{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px!important;color:#5d675f!important;background:#f2f6f3;padding:9px 10px;border-radius:4px}
 .queue-boundary{border-top:1px dashed var(--line);padding-top:10px;margin-top:12px!important}
 .queue-output{color:var(--ink)!important}
+.queue-candidate-download{display:inline-flex;align-items:center;justify-content:center;min-height:28px;margin-top:12px;padding:6px 10px;border:1px solid #bfd8ca;border-radius:4px;background:#edf6f0;color:var(--green);font-size:11px;font-weight:600}
+.queue-candidate-download:hover{border-color:#8fbca5;background:#e3f1e8}
+.queue-review-points{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.queue-review-points span{font-size:11px;color:var(--muted);margin-right:4px}
+.queue-review-points a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:26px;padding:5px 8px;border:1px solid #c8d5eb;border-radius:999px;font-size:11px;color:var(--blue);background:#eff4fc}
+.queue-review-points a:hover{border-color:#9cb6e6;background:#e6eefb}
 .queue-list{display:grid;gap:14px;list-style:none;margin:16px 0 0;padding:0}
 .queue-priority{display:inline-flex;align-items:center;justify-content:center;min-width:31px;height:22px;border-radius:4px;background:#e7f1ec;color:var(--green);font-size:10px;font-weight:650}
 .queue-status{display:inline-flex;align-items:center;height:23px;padding:0 9px;border-radius:999px;border:1px solid var(--line);font-size:9px;color:var(--muted);white-space:nowrap}

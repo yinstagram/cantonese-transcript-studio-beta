@@ -215,6 +215,30 @@ testQueue.items.forEach(item => {
   output.className = 'queue-output';
   output.textContent = `輸出：${item.output}`;
   card.append(header, task, output);
+  if (item.candidateSrt) {
+    const candidate = document.createElement('a');
+    candidate.className = 'queue-candidate-download';
+    candidate.href = item.candidateSrt.path;
+    candidate.download = 'CTS-O8-candidate-20261002.srt';
+    candidate.textContent = '下載候選 SRT';
+    card.append(candidate);
+  }
+  if (item.reviewPoints) {
+    const reviewPoints = document.createElement('div');
+    reviewPoints.className = 'queue-review-points';
+    const label = document.createElement('span');
+    label.textContent = '直接去原片';
+    reviewPoints.append(label);
+    item.reviewPoints.forEach(point => {
+      const link = document.createElement('a');
+      link.href = `https://www.youtube.com/watch?v=O8IB7nao2K4&t=${point.seconds}s`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = point.label;
+      reviewPoints.append(link);
+    });
+    card.append(reviewPoints);
+  }
   $('queue-list').append(card);
 });
 catalog.notProvided.items.forEach(item => {
